@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 338" fill="none">
+  <rect width="600" height="338" fill="#12121a"/>
+  <rect x="24" y="24" width="170" height="290" rx="8" fill="#1a1a24" stroke="#a78bfa" stroke-width="1" opacity="0.4"/>
+  <rect x="210" y="24" width="170" height="290" rx="8" fill="#1a1a24" stroke="#a78bfa" stroke-width="1" opacity="0.4"/>
+  <rect x="396" y="24" width="180" height="290" rx="8" fill="#1a1a24" stroke="#a78bfa" stroke-width="1" opacity="0.4"/>
+  <rect x="40" y="48" width="60" height="8" rx="3" fill="#a78bfa" opacity="0.5"/>
+  <rect x="40" y="72" width="138" height="48" rx="6" fill="#6366f1" opacity="0.2"/>
+  <rect x="40" y="132" width="138" height="48" rx="6" fill="#22d3ee" opacity="0.15"/>
+  <rect x="40" y="192" width="138" height="48" rx="6" fill="#a78bfa" opacity="0.15"/>
+  <text x="300" y="310" text-anchor="middle" fill="#52525b" font-family="monospace" font-size="12">TaskForge</text>
+</svg>

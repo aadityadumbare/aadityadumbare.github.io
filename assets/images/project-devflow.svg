@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 338" fill="none">
+  <rect width="600" height="338" fill="#12121a"/>
+  <rect x="24" y="24" width="552" height="290" rx="8" fill="#1a1a24" stroke="#6366f1" stroke-width="1" opacity="0.5"/>
+  <rect x="48" y="60" width="120" height="12" rx="4" fill="#6366f1" opacity="0.6"/>
+  <rect x="48" y="88" width="200" height="8" rx="3" fill="#3f3f50"/>
+  <rect x="48" y="108" width="160" height="8" rx="3" fill="#3f3f50"/>
+  <circle cx="480" cy="120" r="40" fill="#22d3ee" opacity="0.2"/>
+  <circle cx="480" cy="120" r="24" fill="#22d3ee" opacity="0.4"/>
+  <rect x="48" y="160" width="504" height="1" fill="#2a2a35"/>
+  <rect x="48" y="180" width="80" height="80" rx="8" fill="#6366f1" opacity="0.15"/>
+  <rect x="144" y="180" width="80" height="80" rx="8" fill="#22d3ee" opacity="0.15"/>
+  <rect x="240" y="180" width="80" height="80" rx="8" fill="#a78bfa" opacity="0.15"/>
+  <text x="300" y="310" text-anchor="middle" fill="#52525b" font-family="monospace" font-size="12">DevFlow</text>
+</svg>
