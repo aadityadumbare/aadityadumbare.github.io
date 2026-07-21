@@ -35,6 +35,17 @@ a {
   text-decoration: none;
 }
 
+.inline-link {
+  color: var(--color-accent-light);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: color var(--transition-fast);
+}
+
+.inline-link:hover {
+  color: var(--color-accent);
+}
+
 button {
   font: inherit;
   cursor: pointer;

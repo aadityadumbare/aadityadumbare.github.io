@@ -39,7 +39,13 @@ const Render = {
 
     const resumeBtn = document.getElementById("hero-resume");
     resumeBtn.href = profile.resume;
-    resumeBtn.setAttribute("download", "");
+    if (profile.resume.startsWith("http")) {
+      resumeBtn.setAttribute("target", "_blank");
+      resumeBtn.setAttribute("rel", "noopener noreferrer");
+      resumeBtn.removeAttribute("download");
+    } else {
+      resumeBtn.setAttribute("download", "");
+    }
 
     const contactEmail = document.getElementById("contact-email");
     contactEmail.href = `mailto:${profile.email}`;
