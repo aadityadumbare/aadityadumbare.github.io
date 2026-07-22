@@ -13,6 +13,7 @@
     initNavigation();
     initScrollReveal();
     initActiveNav();
+    initBotMascot();
   }
 
   /* Theme */
@@ -104,6 +105,43 @@
 
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
+  }
+
+  /* Bot Mascot Click Interactions */
+  function initBotMascot() {
+    const bot = document.getElementById("bot-mascot");
+    const bubble = document.getElementById("bot-bubble");
+    if (!bot || !bubble) return;
+
+    const phrases = [
+      "Hi there! I'm Aditya's helper bot. 🤖",
+      "Aditya specializes in .NET Core and Angular/React!",
+      "Need a backend or full-stack developer? You're in the right place!",
+      "Feel free to click 'Say Hello' to send an email directly!",
+      "Check out the featured projects below! 👇",
+      "Click the terminal on the hero banner for a tech surprise!"
+    ];
+    let phraseIndex = 0;
+    let timer = null;
+
+    bot.addEventListener("click", () => {
+      if (timer) clearTimeout(timer);
+
+      bubble.style.animation = "none";
+      bubble.offsetHeight; // force reflow
+
+      bubble.textContent = phrases[phraseIndex];
+      phraseIndex = (phraseIndex + 1) % phrases.length;
+      
+      bubble.style.opacity = "1";
+      bubble.style.transform = "scale(1)";
+      bubble.style.transition = "all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+
+      timer = setTimeout(() => {
+        bubble.style.opacity = "0";
+        bubble.style.transform = "scale(0.8)";
+      }, 3500);
+    });
   }
 
   if (document.readyState === "loading") {

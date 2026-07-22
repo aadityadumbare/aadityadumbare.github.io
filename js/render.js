@@ -101,6 +101,36 @@ const Render = {
       .join("");
   },
 
+  getTechBanner(project) {
+    const tagsStr = project.tags.slice(0, 3).join(" · ");
+    const isBackend = project.tags.some(tag => tag.toLowerCase().includes(".net") || tag.toLowerCase().includes("node") || tag.toLowerCase().includes("api"));
+    const isFrontend = project.tags.some(tag => tag.toLowerCase().includes("angular") || tag.toLowerCase().includes("react") || tag.toLowerCase().includes("html"));
+
+    let leftCode = `01010011 01011001\n01010011 01010100\n01000101 01001101\n_INIT: ACTIVE`;
+    let rightCode = `STATUS: ONLINE\nLATENCY: 12ms\nSECURE: JWT\nTYPE: ${project.featured ? 'FEATURED' : 'STABLE'}`;
+
+    if (isBackend) {
+      leftCode = `[SYSTEM_API]\nClean Arch: OK\nPORT: 5001\nDB_CONN: ACTIVE`;
+      rightCode = `LANG: C# / .NET\nAPI_REQ: 200 OK\nMICROSERVICE\n${tagsStr}`;
+    } else if (isFrontend) {
+      leftCode = `[MODULE_FED]\nWebpack: OK\nUI_ENG: ACTIVE\nCOMP: LAZY`;
+      rightCode = `FRAMEWORK: JS\nRENDER: CLIENT\nDESTRUCT: OK\n${tagsStr}`;
+    }
+
+    return `
+      <div class="project-card__tech-banner" aria-hidden="true">
+        <div class="tech-banner__scanline"></div>
+        <div class="tech-banner__graphics">
+          <div class="tech-banner__circle tech-banner__circle--1"></div>
+          <div class="tech-banner__circle tech-banner__circle--2"></div>
+          <div class="tech-banner__glow"></div>
+        </div>
+        <div class="tech-banner__code tech-banner__code--left">${leftCode.replace(/\n/g, '<br>')}</div>
+        <div class="tech-banner__code tech-banner__code--right">${rightCode.replace(/\n/g, '<br>')}</div>
+      </div>
+    `;
+  },
+
   projects() {
     const container = document.getElementById("projects-grid");
 
@@ -114,10 +144,14 @@ const Render = {
           ? `<a href="${project.repoUrl}" class="project-card__link" target="_blank" rel="noopener noreferrer" aria-label="Source code">${ICONS.github}</a>`
           : "";
 
+        const mediaContent = project.image
+          ? `<img src="${project.image}" alt="${project.title} preview" loading="lazy" width="600" height="338">`
+          : this.getTechBanner(project);
+
         return `
           <article class="project-card reveal ${featuredClass}">
             <div class="project-card__image">
-              <img src="${project.image}" alt="${project.title} preview" loading="lazy" width="600" height="338">
+              ${mediaContent}
               <div class="project-card__overlay">
                 ${liveLink}
                 ${repoLink}
