@@ -1,0 +1,19 @@
+<section class="section" id="experience">
+  <div class="container">
+    <!-- Header -->
+    <app-section-header label="04. Experience" title="Where I Have Worked"></app-section-header>
+
+    <!-- Experience Timeline -->
+    <div class="timeline">
+      @for (item of experience(); track item.role + item.company; let idx = $index) {
+        <div class="timeline__item" appReveal [delay]="idx * 100">
+          <div class="timeline__dot"></div>
+          <h3 class="timeline__role">{{ item.role }}</h3>
+          <div class="timeline__company">{{ item.company }}</div>
+          <div class="timeline__period">{{ item.period }}</div>
+          <p class="timeline__desc">{{ item.description }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>

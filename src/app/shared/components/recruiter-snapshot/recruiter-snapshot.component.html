@@ -1,0 +1,51 @@
+<button type="button" class="recruiter-trigger" (click)="open()" aria-haspopup="dialog">
+  <span class="recruiter-trigger__spark" aria-hidden="true">✦</span>
+  Recruiter Snapshot
+</button>
+
+@if (isOpen()) {
+  <div class="recruiter-overlay" (click)="close()">
+    <section class="recruiter-card" role="dialog" aria-modal="true" aria-labelledby="recruiter-title" (click)="$event.stopPropagation()">
+      <button type="button" class="recruiter-card__close" (click)="close()" aria-label="Close recruiter snapshot">×</button>
+
+      <p class="recruiter-card__eyebrow">30-second recruiter brief</p>
+      <h2 id="recruiter-title">Why {{ profile().name }}?</h2>
+      <p class="recruiter-card__summary">
+        Full Stack Software Developer who ships enterprise Angular, .NET, React, Java, and Node.js applications.
+      </p>
+
+      <div class="recruiter-card__stats" aria-label="Career highlights">
+        @for (stat of stats(); track stat.label) {
+          <div class="recruiter-stat">
+            <strong>{{ stat.value }}</strong>
+            <span>{{ stat.label }}</span>
+          </div>
+        }
+      </div>
+
+      <div class="recruiter-card__section">
+        <h3>Best fit</h3>
+        <div class="recruiter-card__tags">
+          <span>Full Stack</span>
+          <span>Angular &amp; React</span>
+          <span>.NET &amp; Java</span>
+          <span>Enterprise APIs</span>
+        </div>
+      </div>
+
+      <div class="recruiter-card__section">
+        <h3>Evidence of impact</h3>
+        <ul>
+          <li>Modernized Angular 8/12 applications to Angular 22.</li>
+          <li>Built secure APIs, payment integrations, and real-time features.</li>
+          <li>Comfortable across frontend, backend, databases, and CI/CD.</li>
+        </ul>
+      </div>
+
+      <div class="recruiter-card__actions">
+        <a class="btn btn--primary" [href]="profile().resume" target="_blank" rel="noopener noreferrer">View Resume</a>
+        <a class="btn btn--outline" [href]="'mailto:' + profile().email">Contact Me</a>
+      </div>
+    </section>
+  </div>
+}

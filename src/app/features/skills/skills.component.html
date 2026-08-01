@@ -1,0 +1,23 @@
+<section class="section" id="skills">
+  <div class="container">
+    <!-- Header -->
+    <app-section-header label="02. Core Skills" title="What I Build With"></app-section-header>
+
+    <!-- Skills Grid -->
+    <div class="skills__grid">
+      @for (cat of skillCategories(); track cat.title; let idx = $index) {
+        <div class="skill-card" appReveal [delay]="idx * 100">
+          <div class="skill-card__icon">
+            {{ cat.icon }}
+          </div>
+          <h3 class="skill-card__title">{{ cat.title }}</h3>
+          <div class="skill-card__tags">
+            @for (item of cat.items; track item) {
+              <app-tech-badge [techName]="item"></app-tech-badge>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>

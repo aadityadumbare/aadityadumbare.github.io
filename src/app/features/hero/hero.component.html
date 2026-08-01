@@ -1,0 +1,85 @@
+<section class="hero" id="home">
+  <div class="container hero__grid">
+    <!-- Intro Text column -->
+    <div class="hero__content" appReveal>
+      <div class="hero__badge">
+        <span class="hero__status-dot"></span>
+        <span>Available for full-time opportunities</span>
+      </div>
+      <h1 class="hero__title">
+        I am <span class="gradient-text">{{ profile().name }}</span>
+      </h1>
+      <p class="hero__role">
+        {{ profile().title }}<span class="hero__cursor">|</span>
+      </p>
+      <p class="hero__tagline">
+        {{ profile().tagline }}
+      </p>
+
+      <!-- CTA actions -->
+      <div class="hero__actions">
+        <a href="#projects" class="btn btn--primary btn--lg" (click)="scrollToSection('#projects', $event)">
+          View My Work
+        </a>
+        <app-recruiter-snapshot></app-recruiter-snapshot>
+        <a [href]="profile().resume" target="_blank" rel="noopener noreferrer" class="btn btn--outline btn--lg">
+          <svg class="btn__icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          Download Resume
+        </a>
+      </div>
+
+      <!-- Stats row -->
+      <div class="hero__stats">
+        @for (stat of stats(); track stat.label) {
+          <div class="hero__stat">
+            <div class="hero__stat-value">{{ stat.value }}</div>
+            <div class="hero__stat-label">{{ stat.label }}</div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Terminal simulator column -->
+    <div class="hero__visual" appReveal [delay]="200">
+      <div class="terminal">
+        <div class="terminal__header">
+          <div class="terminal__dots">
+            <span class="terminal__dot terminal__dot--red"></span>
+            <span class="terminal__dot terminal__dot--yellow"></span>
+            <span class="terminal__dot terminal__dot--green"></span>
+          </div>
+          <span class="terminal__title">bash - developer-portfolio</span>
+        </div>
+        <div class="terminal__body">
+          @for (line of lines(); track line.text) {
+            <div class="terminal__line">
+              @if (line.isCmd) {
+                <span class="terminal__prompt">{{ line.prompt }} </span>
+                <span class="terminal__cmd">{{ line.text }}</span>
+              } @else if (line.isOutput) {
+                <pre class="terminal__output">{{ line.text }}</pre>
+              }
+            </div>
+          }
+          @if (isTyping()) {
+            <div class="terminal__line">
+              <span class="terminal__prompt">visitor&#64;aditya-dumbare:~$ </span>
+              <span class="terminal__cmd">{{ currentText() }}</span>
+              <span class="terminal__cursor"></span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll Down indicator -->
+  <a href="#about" class="hero__scroll" (click)="scrollToSection('#about', $event)" aria-label="Scroll to About section">
+    <span>Scroll</span>
+    <span class="hero__scroll-line"></span>
+  </a>
+</section>

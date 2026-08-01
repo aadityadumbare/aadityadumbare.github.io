@@ -1,0 +1,26 @@
+<div class="floating-zone" aria-label="Hidden mode switcher zone">
+  @if (isVisible()) {
+    <div class="floating-switcher" [class.floating-switcher--open]="isOpen()">
+      <button
+        class="floating-switcher__trigger"
+        (click)="toggleOpen()"
+        aria-label="Hidden portfolio mode switcher">
+        <span>{{ portfolioService.activeMode() === 'fullstack' ? '⚡' : portfolioService.activeMode() === 'frontend' ? '🎨' : portfolioService.activeMode() === 'backend' ? '⚙️' : '☕' }}</span>
+      </button>
+
+      @if (isOpen()) {
+        <div class="floating-switcher__menu">
+          @for (mode of modes; track mode.key) {
+            <button
+              class="floating-switcher__option"
+              [class.floating-switcher__option--active]="portfolioService.activeMode() === mode.key"
+              (click)="selectMode(mode.key)">
+              <span>{{ mode.icon }}</span>
+              <span>{{ mode.label }}</span>
+            </button>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>

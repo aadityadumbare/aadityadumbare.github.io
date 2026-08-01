@@ -1,0 +1,60 @@
+<header class="header" [class.header--scrolled]="isScrolled()">
+  <div class="container nav">
+    <!-- Logo -->
+    <a href="#" class="nav__logo" (click)="scrollToSection('#', $event)">
+      <span class="nav__logo-bracket">&lt;</span>aditya<span class="nav__logo-bracket">/&gt;</span>
+    </a>
+
+    <!-- Navigation Menu -->
+    <nav class="nav__menu" [class.nav__menu--open]="isMenuOpen()">
+      @for (link of navLinks; track link.hash) {
+        <a [href]="link.hash" class="nav__link" (click)="scrollToSection(link.hash, $event)">
+          {{ link.label }}
+        </a>
+      }
+    </nav>
+
+    <!-- Header Actions -->
+    <div class="nav__actions">
+      <!-- Mode Switcher Component -->
+      <app-mode-switcher></app-mode-switcher>
+
+      <!-- Theme Toggle Button -->
+      <button 
+        class="theme-toggle" 
+        (click)="themeService.toggleTheme()" 
+        [aria-label]="themeService.theme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'">
+        <!-- Sun Icon -->
+        @if (themeService.theme() === 'dark') {
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        } @else {
+          <!-- Moon Icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        }
+      </button>
+
+      <!-- Mobile Hamburger Toggle -->
+      <button 
+        class="nav__toggle" 
+        (click)="toggleMenu()" 
+        [attr.aria-expanded]="isMenuOpen()" 
+        aria-label="Toggle navigation menu">
+        <span class="nav__toggle-bar"></span>
+        <span class="nav__toggle-bar"></span>
+        <span class="nav__toggle-bar"></span>
+      </button>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,22 @@
+@if (portfolioService.config().showModeSwitcher) {
+  <div class="mode-switcher" [class.mode-switcher--open]="isOpen()">
+    <button class="mode-switcher__trigger" (click)="toggleDropdown()" aria-label="Switch portfolio perspective">
+      <span class="mode-switcher__icon">{{ getModeIcon(portfolioService.activeMode()) }}</span>
+      <span class="mode-switcher__text">{{ getModeLabel(portfolioService.activeMode()) }}</span>
+      <svg class="mode-switcher__arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </button>
+    <div class="mode-switcher__dropdown">
+      @for (mode of modes; track mode.key) {
+        <button 
+          class="mode-switcher__option" 
+          [class.mode-switcher__option--active]="portfolioService.activeMode() === mode.key"
+          (click)="selectMode(mode.key)">
+          <span class="mode-switcher__option-icon">{{ mode.icon }}</span>
+          <span class="mode-switcher__option-label">{{ mode.label }}</span>
+        </button>
+      }
+    </div>
+  </div>
+}

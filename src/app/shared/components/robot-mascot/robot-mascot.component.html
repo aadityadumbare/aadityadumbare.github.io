@@ -1,0 +1,30 @@
+<div class="bot-container" [class.bot-container--settled]="hasSettled()">
+  <!-- Speech Bubble -->
+  <div class="bot-bubble" [class.bot-bubble--visible]="showBubble()">
+    {{ bubbleText() }}
+  </div>
+
+  <!-- Robot Body -->
+  <button type="button" class="bot" (click)="onBotClick()" aria-label="Talk to Aditya's assistant">
+    <div class="bot__antenna">
+      <div class="bot__antenna-ball"></div>
+    </div>
+    <div class="bot__head">
+      <div class="bot__ears"></div>
+      <div class="bot__face">
+        <div class="bot__eye"></div>
+        <div class="bot__eye"></div>
+      </div>
+    </div>
+    <div class="bot__body">
+      <div class="bot__screen">
+        <div class="bot__pulse"></div>
+      </div>
+      <div class="bot__arms">
+        <div class="bot__arm bot__arm--left"></div>
+        <div class="bot__arm bot__arm--right"></div>
+      </div>
+    </div>
+    <div class="bot__thruster"></div>
+  </button>
+</div>

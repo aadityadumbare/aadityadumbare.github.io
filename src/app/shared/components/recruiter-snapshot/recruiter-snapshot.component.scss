@@ -1,0 +1,126 @@
+.recruiter-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 0.75rem 1rem;
+  color: var(--color-accent-light);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  border: 1px solid color-mix(in srgb, var(--color-accent) 55%, transparent);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-accent) 9%, transparent);
+  transition: transform var(--transition-base), background var(--transition-base), border-color var(--transition-base);
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-accent);
+    background: color-mix(in srgb, var(--color-accent) 17%, transparent);
+  }
+}
+
+.recruiter-trigger__spark {
+  color: var(--color-accent-secondary);
+  font-size: 1.1em;
+}
+
+.recruiter-overlay {
+  position: fixed;
+  z-index: calc(var(--z-overlay) + 10);
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: var(--space-lg);
+  background: rgba(4, 4, 8, 0.74);
+  backdrop-filter: blur(10px);
+}
+
+.recruiter-card {
+  position: relative;
+  width: min(100%, 42rem);
+  max-height: min(90vh, 48rem);
+  overflow-y: auto;
+  padding: clamp(var(--space-xl), 5vw, var(--space-3xl));
+  border: 1px solid var(--color-border-hover);
+  border-radius: var(--radius-xl);
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--color-accent) 13%, transparent), transparent 42%),
+    var(--color-bg-alt);
+  box-shadow: var(--shadow-lg), 0 0 70px color-mix(in srgb, var(--color-accent) 18%, transparent);
+}
+
+.recruiter-card__close {
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-md);
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  color: var(--color-text-muted);
+  font-size: var(--text-xl);
+  line-height: 1;
+
+  &:hover { color: var(--color-text); border-color: var(--color-accent); }
+}
+
+.recruiter-card__eyebrow {
+  color: var(--color-accent-secondary);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.recruiter-card h2 {
+  margin-top: var(--space-sm);
+  font-size: clamp(var(--text-2xl), 5vw, var(--text-4xl));
+  letter-spacing: -0.03em;
+}
+
+.recruiter-card__summary {
+  max-width: 38rem;
+  margin-top: var(--space-md);
+  color: var(--color-text-muted);
+  font-size: var(--text-lg);
+}
+
+.recruiter-card__stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-sm);
+  margin-block: var(--space-xl);
+}
+
+.recruiter-stat {
+  padding: var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+
+  strong { display: block; color: var(--color-accent-light); font-size: var(--text-xl); }
+  span { color: var(--color-text-dim); font-size: var(--text-xs); }
+}
+
+.recruiter-card__section { margin-top: var(--space-lg); }
+.recruiter-card__section h3 { font-size: var(--text-sm); margin-bottom: var(--space-sm); }
+
+.recruiter-card__tags { display: flex; flex-wrap: wrap; gap: var(--space-sm); }
+.recruiter-card__tags span {
+  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+}
+
+.recruiter-card ul { display: grid; gap: var(--space-sm); color: var(--color-text-muted); }
+.recruiter-card li { padding-left: 1.25rem; position: relative; }
+.recruiter-card li::before { content: '→'; position: absolute; left: 0; color: var(--color-accent-secondary); }
+
+.recruiter-card__actions { display: flex; flex-wrap: wrap; gap: var(--space-md); margin-top: var(--space-xl); }
+
+@media (max-width: 480px) {
+  .recruiter-card__stats { grid-template-columns: 1fr; }
+  .recruiter-card__actions .btn { width: 100%; }
+}
