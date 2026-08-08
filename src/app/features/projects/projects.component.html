@@ -64,7 +64,7 @@
               }
             </div>
             @if (config().enableProjectDeepDives) {
-              <button type="button" class="project-card__deep-dive" (click)="openDeepDive(project)">
+              <button type="button" class="project-card__deep-dive" data-track="project_case_study" (click)="openDeepDive(project)">
                 View Case Study <span aria-hidden="true">→</span>
               </button>
             }

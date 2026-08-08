@@ -13,5 +13,94 @@
 </head>
 <body>
   <app-root></app-root>
+
+  <!-- Lightweight analytics tracker for the multi-app analytics service.
+       Fires page views on load and SPA route changes (hash routing), plus
+       custom events via [data-track] attributes. Never blocks page render. -->
+  <script>
+    (function () {
+      // When serving locally (ng serve), send events to the local analytics
+      // service. In production builds, use the deployed service.
+      var isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+      var ENDPOINT = (isLocal ? 'http://localhost:3000' : 'https://analytics-service-if1u.onrender.com') + '/api/v1/events';
+      var APP_KEY = 'portfolio-site';
+
+      function makeUid() {
+        var existing = null;
+        try { existing = localStorage.getItem("analytics_uid"); } catch (e) {}
+        if (existing) return existing;
+        var uid = "u_" + Math.random().toString(36).slice(2) + Date.now().toString(36);
+        try { localStorage.setItem("analytics_uid", uid); } catch (e) {}
+        return uid;
+      }
+
+      function send(event) {
+        try {
+          var body = JSON.stringify(
+            Object.assign({ appKey: APP_KEY, userId: makeUid(), client: collectClientInfo() }, event)
+          );
+          if (navigator.sendBeacon) {
+            navigator.sendBeacon(ENDPOINT, new Blob([body], { type: "application/json" }));
+          } else {
+            fetch(ENDPOINT, { method: "POST", body: body, keepalive: true });
+          }
+        } catch (e) { /* analytics must never break the page */ }
+      }
+
+      // Everything the browser can tell us about the device/environment.
+      function collectClientInfo() {
+        var info = {
+          timezone: "",
+          language: "",
+          screen: screen.width + "x" + screen.height,
+          screenSize: screen.width + "x" + screen.height,
+          colorDepth: screen.colorDepth || 0,
+          viewport: window.innerWidth + "x" + window.innerHeight,
+          cores: navigator.hardwareConcurrency || 0,
+          memoryGB: navigator.deviceMemory || 0,
+          online: navigator.onLine === true,
+          touch: "ontouchstart" in window || navigator.maxTouchPoints > 0,
+          userAgent: navigator.userAgent,
+          platform: navigator.platform || ""
+        };
+        try { info.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch (e) {}
+        try { info.language = navigator.language || ""; } catch (e) {}
+        var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+        if (conn) {
+          info.connection = {
+            type: conn.type || "unknown",
+            effectiveType: conn.effectiveType || "unknown",
+            downlinkMbps: conn.downlink != null ? conn.downlink : null,
+            rttMs: conn.rtt != null ? conn.rtt : null
+          };
+        } else {
+          info.connection = { type: "unknown", effectiveType: "unknown", downlinkMbps: null, rttMs: null };
+        }
+        return info;
+      }
+
+      function trackPage() {
+        send({ eventType: "pageview", page: location.hash || "/", referrer: document.referrer });
+      }
+
+      function trackCustom(el) {
+        var name = el.getAttribute("data-track");
+        if (!name) return;
+        var metadata = {};
+        try { metadata = JSON.parse(el.getAttribute("data-track-meta") || "{}"); } catch (e) {}
+        send({ eventType: "custom", eventName: name, metadata: metadata });
+      }
+
+      // CTA clicks and other [data-track] elements (event delegation).
+      document.addEventListener("click", function (e) {
+        var el = e.target && e.target.closest ? e.target.closest("[data-track]") : null;
+        if (el) trackCustom(el);
+      });
+
+      // Initial page view + hashchange (SPA navigation).
+      trackPage();
+      window.addEventListener("hashchange", trackPage);
+    })();
+  </script>
 </body>
 </html>
