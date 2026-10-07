@@ -19,11 +19,11 @@ export class SecretComponent implements AfterViewInit {
   errorMessage = signal<string>('');
 
   accentColors = [
-    { name: 'Indigo (Default)', hex: '#6366f1' },
-    { name: 'Cyberpunk Rose', hex: '#ff007f' },
-    { name: 'Matrix Green', hex: '#00ff66' },
-    { name: 'Neon Amber', hex: '#ffb700' },
-    { name: 'Ocean Cyan', hex: '#00f7ff' }
+    { name: 'Signal Lime (Default)', hex: '#d4ff00' },
+    { name: 'Ink White', hex: '#f5f5f4' },
+    { name: 'Signal Orange', hex: '#ff6b35' },
+    { name: 'Cyber Cyan', hex: '#22d3ee' },
+    { name: 'Hot Magenta', hex: '#ff2d78' }
   ];
 
   @ViewChild('pinInput') pinInput!: ElementRef<HTMLInputElement>;

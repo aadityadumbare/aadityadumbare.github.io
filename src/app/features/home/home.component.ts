@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { HeroComponent } from '../hero/hero.component';
 import { AboutComponent } from '../about/about.component';
@@ -9,9 +9,10 @@ import { ContactComponent } from '../contact/contact.component';
 import { NavComponent } from '../../shared/components/nav/nav.component';
 import { FooterComponent } from '../../shared/components/footer/footer.component';
 import { SecretComponent } from '../secret/secret.component';
-import { RobotMascotComponent } from '../../shared/components/robot-mascot/robot-mascot.component';
 import { FloatingModeSwitcherComponent } from '../../shared/components/floating-mode-switcher/floating-mode-switcher.component';
+import { CursorComponent } from '../../shared/components/cursor/cursor.component';
 import { PortfolioService } from '../../core/services/portfolio.service';
+import { MotionService } from '../../core/services/motion.service';
 
 @Component({
   selector: 'app-home',
@@ -26,14 +27,15 @@ import { PortfolioService } from '../../core/services/portfolio.service';
     NavComponent,
     FooterComponent,
     SecretComponent,
-    RobotMascotComponent,
-    FloatingModeSwitcherComponent
+    FloatingModeSwitcherComponent,
+    CursorComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="bg-gradient" aria-hidden="true"></div>
     <div class="bg-grid" aria-hidden="true"></div>
 
+    <app-cursor></app-cursor>
     <app-nav></app-nav>
 
     <main>
@@ -46,16 +48,17 @@ import { PortfolioService } from '../../core/services/portfolio.service';
     </main>
 
     <app-footer></app-footer>
-    <app-robot-mascot></app-robot-mascot>
     <app-floating-mode-switcher></app-floating-mode-switcher>
     <app-secret></app-secret>
   `
 })
 export class HomeComponent implements OnInit {
-  private router = inject(Router);
-  private portfolioService = inject(PortfolioService);
+  private readonly router = inject(Router);
+  private readonly portfolioService = inject(PortfolioService);
+  // Instantiated here so Lenis + ScrollTrigger come up with the page.
+  private readonly motion = inject(MotionService);
 
-  ngOnInit() {
+  ngOnInit(): void {
     if (this.router.url.includes('/secret')) {
       this.portfolioService.unlockSecret();
     }

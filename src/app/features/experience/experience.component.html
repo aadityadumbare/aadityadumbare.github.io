@@ -1,19 +1,20 @@
 <section class="section" id="experience">
   <div class="container">
-    <!-- Header -->
-    <app-section-header label="04. Experience" title="Where I Have Worked"></app-section-header>
+    <app-section-header label="04 / Experience" title="Where I've worked"></app-section-header>
 
-    <!-- Experience Timeline -->
-    <div class="timeline">
-      @for (item of experience(); track item.role + item.company; let idx = $index) {
-        <div class="timeline__item" appReveal [delay]="idx * 100">
-          <div class="timeline__dot"></div>
-          <h3 class="timeline__role">{{ item.role }}</h3>
-          <div class="timeline__company">{{ item.company }}</div>
-          <div class="timeline__period">{{ item.period }}</div>
-          <p class="timeline__desc">{{ item.description }}</p>
-        </div>
+    <ol class="ledger">
+      @for (item of experience(); track item.role + item.company; let i = $index) {
+        <li class="ledger__item" appReveal [delay]="i * 80">
+          <div class="ledger__period">{{ item.period }}</div>
+          <div class="ledger__detail">
+            <h3 class="ledger__role">{{ item.role }}</h3>
+            <p class="ledger__company">{{ item.company }}</p>
+            <p class="ledger__desc">{{ item.description }}</p>
+          </div>
+        </li>
+      } @empty {
+        <li class="ledger__empty">No roles to show for this perspective.</li>
       }
-    </div>
+    </ol>
   </div>
 </section>

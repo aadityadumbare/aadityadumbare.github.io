@@ -1,22 +1,22 @@
 <section class="section" id="skills">
   <div class="container">
-    <!-- Header -->
-    <app-section-header label="02. Core Skills" title="What I Build With"></app-section-header>
+    <app-section-header label="02 / Capabilities" title="What I build with"></app-section-header>
 
-    <!-- Skills Grid -->
-    <div class="skills__grid">
-      @for (cat of skillCategories(); track cat.title; let idx = $index) {
-        <div class="skill-card" appReveal [delay]="idx * 100">
-          <div class="skill-card__icon">
-            {{ cat.icon }}
+    <div class="skills__index">
+      @for (cat of skillCategories(); track cat.title; let i = $index) {
+        <article class="skill-row" appReveal [delay]="i * 80">
+          <div class="skill-row__head">
+            <span class="skill-row__index" aria-hidden="true">{{ i + 1 < 10 ? '0' + (i + 1) : i + 1 }}</span>
+            <h3 class="skill-row__title">{{ cat.title }}</h3>
           </div>
-          <h3 class="skill-card__title">{{ cat.title }}</h3>
-          <div class="skill-card__tags">
+          <ul class="skill-row__list">
             @for (item of cat.items; track item) {
-              <app-tech-badge [techName]="item"></app-tech-badge>
+              <li class="skill-row__item">{{ item }}</li>
             }
-          </div>
-        </div>
+          </ul>
+        </article>
+      } @empty {
+        <p class="skills__empty">No skills to show for this perspective.</p>
       }
     </div>
   </div>

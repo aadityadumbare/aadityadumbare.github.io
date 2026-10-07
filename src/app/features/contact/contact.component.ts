@@ -1,13 +1,11 @@
 import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { PortfolioService } from '../../core/services/portfolio.service';
-import { SectionHeaderComponent } from '../../shared/components/section-header/section-header.component';
 import { RevealDirective } from '../../shared/directives/reveal.directive';
 
 @Component({
   selector: 'app-contact',
   standalone: true,
-  imports: [CommonModule, RevealDirective],
+  imports: [RevealDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.scss']

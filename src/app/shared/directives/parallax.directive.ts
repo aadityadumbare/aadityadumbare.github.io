@@ -3,42 +3,36 @@ import gsap from 'gsap';
 import { MotionService } from '../../core/services/motion.service';
 
 /**
- * Scroll reveal. Keeps the original `[appReveal]` + `[delay]` API so existing
- * templates keep working, but drives the animation with GSAP ScrollTrigger.
+ * Scrubbed vertical parallax. `speed` is the travel as a fraction of the
+ * element's own height (e.g. 0.12 shifts ±12%).
  */
 @Directive({
-  selector: '[appReveal]',
+  selector: '[appParallax]',
   standalone: true
 })
-export class RevealDirective implements OnInit, OnDestroy {
-  /** Delay in milliseconds before the reveal runs. */
-  @Input() delay = 0;
+export class ParallaxDirective implements OnInit, OnDestroy {
+  @Input('appParallax') speed = 0.12;
 
   private readonly el = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly motion = inject(MotionService);
   private tween: gsap.core.Tween | null = null;
 
   ngOnInit(): void {
-    const node = this.el.nativeElement;
-
     if (this.motion.reducedMotion()) {
-      gsap.set(node, { opacity: 1, y: 0 });
       return;
     }
-
+    const speed = Number(this.speed) || 0.12;
     this.tween = gsap.fromTo(
-      node,
-      { opacity: 0, y: 26 },
+      this.el.nativeElement,
+      { yPercent: -speed * 100 },
       {
-        opacity: 1,
-        y: 0,
-        duration: 0.7,
-        delay: this.delay / 1000,
-        ease: 'power3.out',
+        yPercent: speed * 100,
+        ease: 'none',
         scrollTrigger: {
-          trigger: node,
-          start: 'top 88%',
-          once: true
+          trigger: this.el.nativeElement,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: true
         }
       }
     );

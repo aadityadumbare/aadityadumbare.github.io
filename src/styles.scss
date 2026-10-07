@@ -1,34 +1,45 @@
 /* ==========================================================================
-   DESIGN TOKENS & VARIABLES
+   KINETIC MONOCHROME — DESIGN TOKENS
+   Near-black canvas, one signature hue (acid lime), hairline rules.
    ========================================================================== */
 :root {
-  /* Colors — dark theme (default) */
-  --color-bg: #0a0a0f;
-  --color-bg-alt: #12121a;
-  --color-surface: rgba(255, 255, 255, 0.03);
-  --color-surface-hover: rgba(255, 255, 255, 0.06);
-  --color-border: rgba(255, 255, 255, 0.08);
-  --color-border-hover: rgba(255, 255, 255, 0.15);
+  /* Surfaces */
+  --color-bg: #08080a;
+  --color-bg-elev: #111114;
+  --color-bg-alt: #0d0d10;
+  --color-surface: rgba(245, 245, 244, 0.03);
+  --color-surface-hover: rgba(245, 245, 244, 0.06);
+  --color-border: rgba(245, 245, 244, 0.1);
+  --color-border-hover: rgba(245, 245, 244, 0.22);
 
-  --color-text: #e4e4e7;
-  --color-text-muted: #a1a1aa;
-  --color-text-dim: #71717a;
+  /* Ink */
+  --color-ink: #f5f5f4;
+  --color-text: #f5f5f4;
+  --color-text-muted: #8a8a90;
+  --color-text-dim: #4a4a50;
 
-  --color-accent: #6366f1;
-  --color-accent-light: #818cf8;
-  --color-accent-glow: rgba(99, 102, 241, 0.4);
-  --color-accent-secondary: #22d3ee;
-  --color-accent-tertiary: #a78bfa;
+  /* Rules */
+  --color-line: rgba(245, 245, 244, 0.1);
+  --color-line-strong: rgba(245, 245, 244, 0.22);
 
-  --gradient-primary: linear-gradient(135deg, #6366f1 0%, #22d3ee 50%, #a78bfa 100%);
-  --gradient-text: linear-gradient(135deg, #818cf8, #22d3ee, #c084fc);
+  /* The one hue */
+  --color-accent: #d4ff00;
+  --color-accent-ink: #08080a;
+  --color-accent-light: #e2ff5c;
+  --color-accent-glow: rgba(212, 255, 0, 0.32);
+  --color-accent-secondary: #d4ff00;
+  --color-accent-tertiary: #f5f5f4;
+  --color-hint: #ff3d00;
 
-  --color-success: #22c55e;
-  --color-terminal-bg: #0d0d14;
+  --gradient-primary: linear-gradient(135deg, #d4ff00 0%, #b9e000 100%);
+  --gradient-text: linear-gradient(135deg, #f5f5f4, #f5f5f4);
+
+  --color-success: #d4ff00;
+  --color-terminal-bg: #0b0b0e;
 
   /* Typography */
-  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-mono: ui-monospace, "Cascadia Code", "Segoe UI Mono", Consolas, monospace;
+  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", "Segoe UI Mono", Consolas, monospace;
 
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
@@ -41,9 +52,10 @@
   --text-5xl: 3rem;
   --text-6xl: 3.75rem;
 
-  /* Spacing */
-  --space-xs: 0.25rem;
-  --space-sm: 0.5rem;
+  /* Spacing (1 / 4 / 9 rhythm) */
+  --space-2xs: 0.25rem;
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
   --space-md: 1rem;
   --space-lg: 1.5rem;
   --space-xl: 2rem;
@@ -52,52 +64,74 @@
   --space-4xl: 6rem;
 
   /* Layout */
-  --container-max: 72rem;
+  --container-max: 78rem;
   --header-height: 4rem;
-  --radius-sm: 0.375rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
   --radius-full: 9999px;
 
-  /* Effects */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+  /* Depth — flat, rule-led, no soft elevation */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.6);
   --shadow-glow: 0 0 40px var(--color-accent-glow);
 
-  --transition-fast: 150ms ease;
-  --transition-base: 250ms ease;
-  --transition-slow: 400ms ease;
+  /* Motion */
+  --dur-tap: 100ms;
+  --dur-ui: 150ms;
+  --dur-panel: 250ms;
+  --dur-section: 400ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --transition-fast: var(--dur-ui) var(--ease-out);
+  --transition-base: var(--dur-panel) var(--ease-out);
+  --transition-slow: var(--dur-section) var(--ease-out);
 
   --z-bg: -1;
   --z-header: 100;
+  --z-cursor: 150;
   --z-overlay: 200;
 }
 
-/* Light theme overrides */
+/* Paper variant — kept so the theme toggle still works */
 [data-theme="light"] {
-  --color-bg: #fafafa;
-  --color-bg-alt: #f4f4f5;
-  --color-surface: rgba(0, 0, 0, 0.03);
-  --color-surface-hover: rgba(0, 0, 0, 0.06);
-  --color-border: rgba(0, 0, 0, 0.08);
-  --color-border-hover: rgba(0, 0, 0, 0.15);
+  --color-bg: #f4f1ea;
+  --color-bg-elev: #ffffff;
+  --color-bg-alt: #ece7dc;
+  --color-surface: rgba(20, 17, 13, 0.03);
+  --color-surface-hover: rgba(20, 17, 13, 0.06);
+  --color-border: rgba(20, 17, 13, 0.12);
+  --color-border-hover: rgba(20, 17, 13, 0.26);
 
-  --color-text: #18181b;
-  --color-text-muted: #52525b;
-  --color-text-dim: #a1a1aa;
+  --color-ink: #14110d;
+  --color-text: #14110d;
+  --color-text-muted: #6b6459;
+  --color-text-dim: #9a927f;
 
-  --color-accent-glow: rgba(99, 102, 241, 0.25);
-  --color-terminal-bg: #1e1e2e;
+  --color-line: rgba(20, 17, 13, 0.12);
+  --color-line-strong: rgba(20, 17, 13, 0.26);
 
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+  --color-accent: #6b7a00;
+  --color-accent-ink: #ffffff;
+  --color-accent-light: #556300;
+  --color-accent-glow: rgba(107, 122, 0, 0.22);
+  --color-accent-secondary: #6b7a00;
+  --color-accent-tertiary: #14110d;
+  --color-hint: #c0341a;
+
+  --gradient-primary: linear-gradient(135deg, #6b7a00 0%, #556300 100%);
+  --gradient-text: linear-gradient(135deg, #14110d, #14110d);
+
+  --color-terminal-bg: #14110d;
+
+  --shadow-sm: 0 1px 2px rgba(20, 17, 13, 0.08);
+  --shadow-md: 0 8px 30px rgba(20, 17, 13, 0.1);
+  --shadow-lg: 0 20px 60px rgba(20, 17, 13, 0.14);
 }
 
 /* ==========================================================================
-   RESET & BASE STYLES
+   RESET & BASE
    ========================================================================== */
 *,
 *::before,
@@ -108,8 +142,9 @@
 }
 
 html {
-  scroll-behavior: smooth;
-  scroll-padding-top: var(--header-height);
+  /* Lenis owns smooth scrolling; native smooth would fight it */
+  scroll-behavior: auto;
+  scroll-padding-top: calc(var(--header-height) + var(--space-md));
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
@@ -139,17 +174,6 @@ a {
   text-decoration: none;
 }
 
-.inline-link {
-  color: var(--color-accent-light);
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  transition: color var(--transition-fast);
-}
-
-.inline-link:hover {
-  color: var(--color-accent);
-}
-
 button {
   font: inherit;
   cursor: pointer;
@@ -170,23 +194,24 @@ strong {
 
 ::selection {
   background: var(--color-accent);
-  color: white;
+  color: var(--color-accent-ink);
 }
 
 :focus-visible {
   outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
+  outline-offset: 3px;
 }
 
-/* Background effects */
+/* ==========================================================================
+   BACKGROUND PLANES
+   ========================================================================== */
 .bg-gradient {
   position: fixed;
   inset: 0;
   z-index: var(--z-bg);
   background:
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99, 102, 241, 0.15), transparent),
-    radial-gradient(ellipse 60% 40% at 100% 50%, rgba(34, 211, 238, 0.08), transparent),
-    radial-gradient(ellipse 50% 30% at 0% 80%, rgba(167, 139, 250, 0.08), transparent);
+    radial-gradient(ellipse 70% 45% at 50% -12%, rgba(212, 255, 0, 0.07), transparent 62%),
+    radial-gradient(ellipse 50% 40% at 100% 100%, rgba(212, 255, 0, 0.03), transparent 60%);
   pointer-events: none;
 }
 
@@ -195,24 +220,30 @@ strong {
   inset: 0;
   z-index: var(--z-bg);
   background-image:
-    linear-gradient(var(--color-border) 1px, transparent 1px),
-    linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
-  background-size: 60px 60px;
-  mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
-  -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
+    linear-gradient(var(--color-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-line) 1px, transparent 1px);
+  background-size: 90px 90px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, black 10%, transparent 78%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, black 10%, transparent 78%);
   pointer-events: none;
-  opacity: 0.5;
+  opacity: 0.55;
 }
 
+[data-theme="light"] .bg-gradient {
+  background: radial-gradient(ellipse 70% 45% at 50% -12%, rgba(107, 122, 0, 0.08), transparent 62%);
+}
+
+/* Legacy hook — the old gradient text is retired in favour of solid ink */
 .gradient-text {
-  background: var(--gradient-text);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--color-text);
+}
+
+.accent-text {
+  color: var(--color-accent);
 }
 
 /* ==========================================================================
-   LAYOUT & CONTAINER STYLES
+   LAYOUT
    ========================================================================== */
 .container {
   width: 100%;
@@ -222,12 +253,13 @@ strong {
 }
 
 .section {
-  padding-block: var(--space-4xl);
   position: relative;
+  padding-block: var(--space-4xl);
 }
 
 .section--alt {
-  background: var(--color-bg-alt);
+  background: transparent;
+  border-top: 1px solid var(--color-line);
 }
 
 .section__header {
@@ -237,61 +269,113 @@ strong {
 .section__label {
   display: block;
   font-family: var(--font-mono);
-  font-size: var(--text-sm);
-  color: var(--color-accent-light);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--color-accent);
   margin-bottom: var(--space-sm);
 }
 
 .section__title {
-  font-size: clamp(var(--text-2xl), 4vw, var(--text-4xl));
+  font-size: clamp(var(--text-3xl), 5vw, var(--text-5xl));
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
 }
 
 /* ==========================================================================
-   GLOBAL UTILITY COMPONENTS
+   TYPE UTILITIES
+   ========================================================================== */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--color-text-muted);
+}
+
+.display {
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+}
+
+.rule {
+  height: 1px;
+  border: 0;
+  background: var(--color-line);
+}
+
+/* ==========================================================================
+   CONTROLS
    ========================================================================== */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-sm);
-  padding: 0.75rem 1.5rem;
-  font-size: var(--text-sm);
-  font-weight: 600;
+  gap: var(--space-xs);
+  padding: 0.7rem 1.25rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
   border-radius: var(--radius-md);
-  transition: all var(--transition-base);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--color-text);
   white-space: nowrap;
+  transition:
+    background-color var(--dur-ui) var(--ease-out),
+    border-color var(--dur-ui) var(--ease-out),
+    color var(--dur-ui) var(--ease-out),
+    transform var(--dur-ui) var(--ease-out);
+}
+
+.btn:active {
+  transform: scale(0.98);
 }
 
 .btn--primary {
-  background: var(--gradient-primary);
-  color: white;
-  box-shadow: var(--shadow-glow);
+  background: var(--color-accent);
+  color: var(--color-accent-ink);
+  border-color: var(--color-accent);
 }
 
 .btn--primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 60px var(--color-accent-glow);
+  background: var(--color-accent-light);
+  border-color: var(--color-accent-light);
 }
 
 .btn--outline {
-  border: 1px solid var(--color-border);
+  border-color: var(--color-line-strong);
   color: var(--color-text);
-  background: var(--color-surface);
 }
 
 .btn--outline:hover {
   border-color: var(--color-accent);
-  background: var(--color-surface-hover);
+  color: var(--color-accent);
 }
 
 .btn--lg {
-  padding: 1rem 2rem;
-  font-size: var(--text-base);
+  padding: 0.95rem 1.75rem;
+  font-size: var(--text-sm);
 }
 
-/* Custom scrollbar */
+.inline-link {
+  color: var(--color-accent-light);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: color var(--dur-ui) var(--ease-out);
+}
+
+.inline-link:hover {
+  color: var(--color-accent);
+}
+
+/* ==========================================================================
+   SCROLLBAR
+   ========================================================================== */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -300,15 +384,14 @@ strong {
   background: var(--color-bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-border);
-  border-radius: var(--radius-full);
+  background: var(--color-line-strong);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-border-hover);
+  background: var(--color-accent);
 }
 
 /* ==========================================================================
-   RESPONSIVE GLOBAL STYLES
+   RESPONSIVE
    ========================================================================== */
 @media (max-width: 900px) {
   .section {
@@ -335,17 +418,43 @@ strong {
 }
 
 /* ==========================================================================
-   SCROLL REVEAL ANIMATIONS
+   CUSTOM CURSOR (only active on fine pointers; CursorComponent sets the class)
    ========================================================================== */
-.reveal {
-  opacity: 0;
-  transform: translateY(24px);
-  transition:
-    opacity 0.6s ease,
-    transform 0.6s ease;
+html.has-custom-cursor,
+html.has-custom-cursor * {
+  cursor: none !important;
 }
 
-.reveal--visible {
-  opacity: 1;
-  transform: translateY(0);
+/* ==========================================================================
+   LENIS SMOOTH SCROLL
+   ========================================================================== */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   REDUCED MOTION — global kill switch (JS also honours the preference)
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

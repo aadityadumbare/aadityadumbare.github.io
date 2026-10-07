@@ -1,40 +1,36 @@
-import { Component, inject, computed, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { PortfolioService } from '../../core/services/portfolio.service';
 import { SectionHeaderComponent } from '../../shared/components/section-header/section-header.component';
-import { TechBadgeComponent } from '../../shared/components/tech-badge/tech-badge.component';
 import { RevealDirective } from '../../shared/directives/reveal.directive';
 
 @Component({
   selector: 'app-skills',
   standalone: true,
-  imports: [CommonModule, SectionHeaderComponent, TechBadgeComponent, RevealDirective],
+  imports: [SectionHeaderComponent, RevealDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './skills.component.html',
   styleUrls: ['./skills.component.scss']
 })
 export class SkillsComponent {
-  portfolioService = inject(PortfolioService);
+  private readonly portfolioService = inject(PortfolioService);
 
-  // Read filtered skill group
-  filteredSkills = this.portfolioService.skills;
+  private readonly filteredSkills = this.portfolioService.skills;
 
-  // Format skills as an array of categories for rendering
   skillCategories = computed(() => {
     const s = this.filteredSkills();
-    const list = [];
+    const list: { title: string; items: string[] }[] = [];
 
-    if (s.frontend && s.frontend.length > 0) {
-      list.push({ title: 'Frontend Development', items: s.frontend, icon: '🎨' });
+    if (s.frontend?.length) {
+      list.push({ title: 'Frontend Engineering', items: s.frontend });
     }
-    if (s.backend && s.backend.length > 0) {
-      list.push({ title: 'Backend Development', items: s.backend, icon: '⚙️' });
+    if (s.backend?.length) {
+      list.push({ title: 'Backend & APIs', items: s.backend });
     }
-    if (s.database && s.database.length > 0) {
-      list.push({ title: 'Database Systems', items: s.database, icon: '💾' });
+    if (s.database?.length) {
+      list.push({ title: 'Databases', items: s.database });
     }
-    if (s.devops && s.devops.length > 0) {
-      list.push({ title: 'DevOps & Tools', items: s.devops, icon: '🛠️' });
+    if (s.devops?.length) {
+      list.push({ title: 'DevOps & Tooling', items: s.devops });
     }
 
     return list;

@@ -1,21 +1,22 @@
-import { Component, inject, signal, ChangeDetectionStrategy, HostListener } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, ElementRef, HostListener, ViewChild, inject, signal } from '@angular/core';
 import { ThemeService } from '../../../core/services/theme.service';
 import { ModeSwitcherComponent } from '../mode-switcher/mode-switcher.component';
 
 @Component({
   selector: 'app-nav',
   standalone: true,
-  imports: [CommonModule, ModeSwitcherComponent],
+  imports: [ModeSwitcherComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.scss']
 })
 export class NavComponent {
   themeService = inject(ThemeService);
-  
-  isScrolled = signal<boolean>(false);
-  isMenuOpen = signal<boolean>(false);
+
+  @ViewChild('progress') private readonly progressRef?: ElementRef<HTMLElement>;
+
+  isScrolled = signal(false);
+  isMenuOpen = signal(false);
 
   navLinks = [
     { label: 'About', hash: '#about' },
@@ -25,28 +26,34 @@ export class NavComponent {
     { label: 'Contact', hash: '#contact' }
   ];
 
+  private ticking = false;
+
   @HostListener('window:scroll', [])
-  onWindowScroll() {
-    this.isScrolled.set(window.scrollY > 50);
-  }
-
-  toggleMenu() {
-    this.isMenuOpen.update(v => !v);
-  }
-
-  closeMenu() {
-    this.isMenuOpen.set(false);
-  }
-
-  scrollToSection(hash: string, event: Event) {
-    event.preventDefault();
-    this.closeMenu();
-    
-    const targetElement = document.querySelector(hash);
-    if (targetElement) {
-      targetElement.scrollIntoView({ behavior: 'smooth' });
-      // Update browser history/hash
-      window.history.pushState(null, '', hash);
+  onWindowScroll(): void {
+    // The scroll-progress bar is written straight to the DOM so scrolling
+    // never drives change detection.
+    if (this.ticking) {
+      return;
     }
+    this.ticking = true;
+    requestAnimationFrame(() => {
+      this.ticking = false;
+      const doc = document.documentElement;
+      const max = doc.scrollHeight - window.innerHeight;
+      const ratio = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      const bar = this.progressRef?.nativeElement;
+      if (bar) {
+        bar.style.transform = `scaleX(${ratio})`;
+      }
+      this.isScrolled.set(window.scrollY > 40);
+    });
+  }
+
+  toggleMenu(): void {
+    this.isMenuOpen.update((open) => !open);
+  }
+
+  closeMenu(): void {
+    this.isMenuOpen.set(false);
   }
 }
