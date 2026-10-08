@@ -20,11 +20,22 @@
 
 .cursor__dot,
 .cursor__ring,
+.cursor__pulse,
 .cursor__label {
   position: fixed;
   top: 0;
   left: 0;
   will-change: transform;
+}
+
+/* Click ripple. Base opacity 0 so it never flashes before its animation. */
+.cursor__pulse {
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-full);
+  opacity: 0;
 }
 
 .cursor__dot {
@@ -75,6 +86,14 @@
 
 .cursor.is-active .cursor__label:not(:empty) {
   opacity: 1;
+}
+
+/* Press feedback — tightens the ring without touching its JS-driven transform. */
+.cursor.is-pressed .cursor__ring {
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border-color: var(--color-accent);
 }
 
 @media (hover: none) {

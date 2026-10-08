@@ -1,0 +1,105 @@
+.discoveries__bar {
+  height: 2px;
+  width: 100%;
+  background: var(--color-line);
+  overflow: hidden;
+}
+
+.discoveries__bar-fill {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: var(--color-accent);
+  transform-origin: left center;
+  transform: scaleX(0);
+  transition: transform var(--dur-section) var(--ease-out);
+}
+
+.discoveries {
+  display: grid;
+  gap: var(--space-md);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.discovery {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-md);
+  align-items: start;
+}
+
+/* An egg shape: oval with a narrowed top. */
+.discovery__egg {
+  position: relative;
+  display: block;
+  width: 20px;
+  height: 26px;
+  margin-top: 2px;
+  border: 1px solid var(--color-line-strong);
+  border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%;
+  transition:
+    background-color var(--dur-section) var(--ease-out),
+    border-color var(--dur-section) var(--ease-out);
+}
+
+.discovery--found .discovery__egg {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.discovery__egg-crack {
+  position: absolute;
+  inset: 0;
+}
+
+.discovery__egg-crack::before,
+.discovery__egg-crack::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  width: 1px;
+  height: 7px;
+  background: var(--color-accent-ink);
+}
+
+.discovery__egg-crack::before {
+  top: 26%;
+  transform: translateX(-1px) rotate(26deg);
+}
+
+.discovery__egg-crack::after {
+  top: 46%;
+  transform: translateX(1px) rotate(-26deg);
+}
+
+.discovery__title {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.discovery__title--locked {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 11px;
+  color: var(--color-text-dim);
+}
+
+.discovery__tip,
+.discovery__hint {
+  margin-top: var(--space-2xs);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+
+.discovery__tip {
+  color: var(--color-text-muted);
+}
+
+.discovery__hint {
+  color: var(--color-text-dim);
+}

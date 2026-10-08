@@ -90,7 +90,9 @@
 
   --z-bg: -1;
   --z-header: 100;
-  --z-cursor: 150;
+  /* Must sit above every overlay (the secret panel sits at --z-overlay + 10),
+     otherwise the custom cursor disappears behind an open dialog. */
+  --z-cursor: 400;
   --z-overlay: 200;
 }
 
@@ -632,6 +634,71 @@ strong {
 html.has-custom-cursor,
 html.has-custom-cursor * {
   cursor: none !important;
+}
+
+/* ==========================================================================
+   EASTER EGGS
+   ========================================================================== */
+/* Scanline sweep played on every theme flip (class toggled by ThemeService). */
+html.theme-flash::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    color-mix(in srgb, var(--color-accent) 12%, transparent) 42%,
+    var(--color-accent-glow) 50%,
+    color-mix(in srgb, var(--color-accent) 12%, transparent) 58%,
+    transparent 100%
+  );
+  animation: theme-scan 650ms var(--ease-out);
+}
+
+@keyframes theme-scan {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  40% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
+
+/* Discovery celebration: a lime vignette pulse around the viewport edges.
+   Uses ::before so it never collides with the theme scanline on ::after. */
+html.discovery-celebrate::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 340;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 78% 62% at 50% 50%,
+    transparent 42%,
+    color-mix(in srgb, var(--color-accent) 24%, transparent) 100%
+  );
+  animation: discovery-celebrate 1400ms var(--ease-out);
+}
+
+@keyframes discovery-celebrate {
+  0% {
+    opacity: 0;
+    transform: scale(1.06);
+  }
+  22% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
 }
 
 /* ==========================================================================

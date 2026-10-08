@@ -1,0 +1,138 @@
+.toasts {
+  position: fixed;
+  left: var(--space-lg);
+  bottom: var(--space-lg);
+  z-index: 350;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  width: min(22rem, calc(100vw - var(--space-lg) * 2));
+  pointer-events: none;
+}
+
+.toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  background: var(--color-bg-elev);
+  border: 1px solid var(--color-line-strong);
+  border-left: 2px solid var(--color-accent);
+  animation: toast-in var(--dur-panel) var(--ease-out);
+}
+
+.toast__body {
+  min-width: 0;
+  flex: 1;
+}
+
+/* Discovery toasts hatch: an egg pops in and cracks open. */
+.toast__egg {
+  position: relative;
+  flex-shrink: 0;
+  width: 20px;
+  height: 26px;
+  margin-top: 2px;
+  background: var(--color-accent);
+  border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%;
+  animation: egg-pop 900ms var(--ease-out) both;
+}
+
+.toast__egg-crack {
+  position: absolute;
+  inset: 0;
+}
+
+.toast__egg-crack::before,
+.toast__egg-crack::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  width: 1px;
+  height: 7px;
+  background: var(--color-accent-ink);
+}
+
+.toast__egg-crack::before {
+  top: 26%;
+  transform: translateX(-1px) rotate(26deg);
+}
+
+.toast__egg-crack::after {
+  top: 46%;
+  transform: translateX(1px) rotate(-26deg);
+}
+
+@keyframes egg-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.2) rotate(-14deg);
+  }
+  45% {
+    opacity: 1;
+    transform: scale(1.18) rotate(7deg);
+  }
+  65% {
+    transform: scale(0.94) rotate(-3deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.toast__eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--color-accent);
+  margin-bottom: var(--space-2xs);
+}
+
+.toast__title {
+  font-size: var(--text-base);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+}
+
+.toast__detail {
+  margin-top: var(--space-2xs);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.toast__close {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  font-size: 16px;
+  line-height: 1;
+  color: var(--color-text-dim);
+  transition: color var(--dur-ui) var(--ease-out);
+}
+
+.toast__close:hover {
+  color: var(--color-accent);
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(-14px);
+  }
+}
+
+@media (max-width: 480px) {
+  .toasts {
+    left: var(--space-md);
+    right: var(--space-md);
+    bottom: var(--space-md);
+    width: auto;
+  }
+}

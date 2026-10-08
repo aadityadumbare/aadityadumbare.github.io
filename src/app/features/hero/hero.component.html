@@ -11,8 +11,9 @@
     <div class="hero__bottom">
       <div class="hero__lede" appReveal>
         <p class="hero__role eyebrow">{{ profile().title }}</p>
-        <h1 class="hero__title display">
-          I build systems<br />that <span class="accent-text">feel alive</span>
+        <h1 class="hero__title display" (click)="glitch()">
+          I build systems<br />that
+          <span class="accent-text" data-text="feel alive" [class.accent-text--glitch]="glitching()">feel alive</span>
         </h1>
       </div>
 

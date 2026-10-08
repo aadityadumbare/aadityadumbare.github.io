@@ -2,7 +2,7 @@
   <div class="header__progress" #progress aria-hidden="true"></div>
 
   <div class="container nav">
-    <a href="#home" class="nav__logo">
+    <a href="#home" class="nav__logo" [class.nav__logo--spin]="spinning()" (dblclick)="spinLogo()">
       aditya<span class="nav__logo-dot">.</span>dumbare
     </a>
 
@@ -17,6 +17,21 @@
 
     <div class="nav__actions">
       <app-mode-switcher></app-mode-switcher>
+
+      <button
+        type="button"
+        class="nav__egg"
+        (click)="ui.openDiscoveries()"
+        [attr.aria-label]="
+          'Hidden features: ' + achievements.found().size + ' of ' + achievements.total + ' found'
+        "
+        title="There are secrets hidden on this page"
+      >
+        <span class="nav__egg-icon" aria-hidden="true"></span>
+        <span class="nav__egg-count" aria-hidden="true">
+          {{ achievements.found().size }}/{{ achievements.total }}
+        </span>
+      </button>
 
       <button
         class="nav__icon-btn"

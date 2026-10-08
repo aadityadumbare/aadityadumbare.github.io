@@ -50,12 +50,30 @@
 }
 
 .nav__logo {
+  display: inline-block;
   font-family: var(--font-mono);
   font-size: var(--text-sm);
   font-weight: 500;
   letter-spacing: 0.02em;
   color: var(--color-text);
   white-space: nowrap;
+}
+
+/* Double-click easter egg: the wordmark flips through a full turn. */
+.nav__logo--spin {
+  animation: logo-spin 900ms var(--ease-out);
+}
+
+@keyframes logo-spin {
+  0% {
+    transform: rotateY(0deg) scale(1);
+  }
+  50% {
+    transform: rotateY(180deg) scale(1.12);
+  }
+  100% {
+    transform: rotateY(360deg) scale(1);
+  }
 }
 
 .nav__logo-dot {
@@ -121,6 +139,38 @@
 .nav__icon-btn svg {
   width: 18px;
   height: 18px;
+}
+
+/* Egg counter — the discoverable way into the hidden features. */
+.nav__egg {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  height: 40px;
+  padding: 0 var(--space-sm);
+  border: 1px solid var(--color-line);
+  color: var(--color-text-muted);
+  transition:
+    color var(--dur-ui) var(--ease-out),
+    border-color var(--dur-ui) var(--ease-out);
+}
+
+.nav__egg:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.nav__egg-icon {
+  width: 11px;
+  height: 14px;
+  border: 1px solid currentColor;
+  border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%;
+}
+
+.nav__egg-count {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
 }
 
 .nav__toggle {
@@ -194,5 +244,12 @@
 @media (max-width: 480px) {
   .nav__actions {
     gap: var(--space-xs);
+  }
+  /* Keep the header tight on small phones — the egg stays, the count goes. */
+  .nav__egg {
+    padding: 0 var(--space-xs);
+  }
+  .nav__egg-count {
+    display: none;
   }
 }

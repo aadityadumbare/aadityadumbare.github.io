@@ -93,6 +93,43 @@ All overlays (project case study, recruiter snapshot, secret admin panel) share 
 
 ---
 
+## Hidden features (discoveries)
+
+Eight things are hidden on the page. Finding one fires a toast; progress is kept
+per browser and can be reset from the admin panel.
+
+| Discovery | How to find it |
+| --- | --- |
+| Command palette | `⌘/Ctrl + K` |
+| The admin panel | Konami code, `Ctrl+Shift+L`, the `#/secret` route, or typing `sudo` |
+| Word of power | type `hire` (anywhere outside a form) |
+| Root access | type `sudo` |
+| Wordmark spin | double-click the logo |
+| Headline glitch | hover or click “feel alive” |
+| Constellation ripple | click anywhere in the hero |
+| Stillness | leave the page untouched for ~18 seconds |
+
+The palette (`⌘/Ctrl + K`) is the hub: jump to any section, toggle the theme,
+switch perspective, copy the email address, open the résumé, open the recruiter
+snapshot, or open the hidden admin panel. Run **Show my discoveries** inside it
+for the running count.
+
+**Stillness** is the most involved: after ~18s without input the hero
+constellation eases into the initials “AD”, the link mesh fades out and the hero
+scrim lifts so the letters are readable front-on (the grid also stops its slow
+rotation). Any input — pointer, key, scroll, touch — releases it and the drift
+resumes. Typed secrets are ignored while focus is in a form field, so they never
+interfere with the contact form or the admin PIN.
+
+Everything is gated by `prefers-reduced-motion`: the CSS effects are neutralised
+by the global kill switch, and the JS effects check `MotionService.reducedMotion()`
+and only run while the particle loop is live (so nothing animates behind a dialog).
+
+Full detail — the discovery system, every trigger, the idle-morph internals, and
+how to add another one: **[docs/hidden-features.md](./docs/hidden-features.md)**.
+
+---
+
 ## Analytics & visitor identity
 
 The site sends page views and custom events to a separate analytics service, and the contact
@@ -154,6 +191,25 @@ regions.
 
 ---
 
+## Roadmap
+
+Tracked here so it outlives any given session:
+
+- [ ] **Personal mode content.** The `personal` perspective only filters the
+      project and experience lists today. It should grow into a real section:
+      personal stories, video clips, a photo gallery, and more (a now page,
+      reading/listening, side projects). It needs its own content shape in
+      `portfolio.data.ts` rather than being forced into `ProjectItem`.
+      Media weight is the main risk — images stay local and optimised, video is
+      never in the initial bundle (budget is 500 kB, currently ~488 kB).
+- [ ] **Open question:** where personal media is hosted (in-repo vs external),
+      and whether personal content should stay public.
+- [ ] **Palette on touch.** The command palette is keyboard-only, so there is no
+      way to *open* it on a phone yet (the footer hint already adapts).
+
+---
+
 ## Docs
 
+- [Hidden features & discoveries](./docs/hidden-features.md)
 - [Visitor identity & contact form](./docs/analytics-identity.md)

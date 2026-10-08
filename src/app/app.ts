@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, inject, HostListener } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { PortfolioService } from './core/services/portfolio.service';
+import { AchievementService } from './core/services/achievement.service';
 
 const KONAMI_SEQUENCE = [
   'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
@@ -16,14 +17,15 @@ const KONAMI_SEQUENCE = [
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class App {
-  private portfolioService = inject(PortfolioService);
+  private readonly portfolioService = inject(PortfolioService);
+  private readonly achievements = inject(AchievementService);
   private konamiIndex = 0;
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(event: KeyboardEvent) {
     if (event.ctrlKey && event.shiftKey && event.key.toLowerCase() === 'l') {
       event.preventDefault();
-      this.portfolioService.unlockSecret();
+      this.revealSecret();
       return;
     }
 
@@ -39,12 +41,17 @@ export class App {
       this.konamiIndex++;
       if (this.konamiIndex === KONAMI_SEQUENCE.length) {
         this.konamiIndex = 0;
-        this.portfolioService.unlockSecret();
+        this.revealSecret();
       }
     } else {
       const first = KONAMI_SEQUENCE[0];
       const normalizedFirst = first.length === 1 ? first.toLowerCase() : first;
       this.konamiIndex = key === normalizedFirst ? 1 : 0;
     }
+  }
+
+  private revealSecret(): void {
+    this.portfolioService.unlockSecret();
+    this.achievements.unlock('secret-panel');
   }
 }

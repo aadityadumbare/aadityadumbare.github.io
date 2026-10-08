@@ -1,6 +1,16 @@
-import { ChangeDetectionStrategy, Component, ElementRef, HostListener, NgZone, inject, signal, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  HostListener,
+  NgZone,
+  effect,
+  inject,
+  viewChild
+} from '@angular/core';
 import { PortfolioService } from '../../../core/services/portfolio.service';
 import { MotionService } from '../../../core/services/motion.service';
+import { UiService } from '../../../core/services/ui.service';
 
 @Component({
   selector: 'app-recruiter-snapshot',
@@ -11,33 +21,39 @@ import { MotionService } from '../../../core/services/motion.service';
 })
 export class RecruiterSnapshotComponent {
   private readonly portfolioService = inject(PortfolioService);
+  private readonly ui = inject(UiService);
   private readonly motion = inject(MotionService);
   private readonly zone = inject(NgZone);
 
   private readonly dialogRef = viewChild<ElementRef<HTMLElement>>('dialog');
   private lastFocused: HTMLElement | null = null;
 
-  isOpen = signal(false);
+  /** Open state lives in UiService so the palette and typed words can trigger it. */
+  readonly isOpen = this.ui.recruiterOpen;
+
   profile = this.portfolioService.profile;
   stats = this.portfolioService.stats;
 
+  constructor() {
+    effect(() => {
+      if (this.ui.recruiterOpen()) {
+        this.lastFocused = document.activeElement as HTMLElement | null;
+        this.motion.lockScroll('recruiter-snapshot');
+        this.zone.runOutsideAngular(() => setTimeout(() => this.dialogRef()?.nativeElement.focus()));
+      } else {
+        this.motion.unlockScroll('recruiter-snapshot');
+        this.lastFocused?.focus?.();
+        this.lastFocused = null;
+      }
+    });
+  }
+
   open(): void {
-    this.isOpen.set(true);
-    this.lastFocused = document.activeElement as HTMLElement | null;
-    this.motion.lockScroll('recruiter-snapshot');
-    this.zone.runOutsideAngular(() =>
-      setTimeout(() => this.dialogRef()?.nativeElement.focus())
-    );
+    this.ui.openRecruiter();
   }
 
   close(): void {
-    if (!this.isOpen()) {
-      return;
-    }
-    this.isOpen.set(false);
-    this.motion.unlockScroll('recruiter-snapshot');
-    this.lastFocused?.focus?.();
-    this.lastFocused = null;
+    this.ui.closeRecruiter();
   }
 
   @HostListener('document:keydown.escape')

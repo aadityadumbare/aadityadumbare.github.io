@@ -19,6 +19,9 @@
   inset: 0;
   z-index: 1;
   pointer-events: none;
+  /* --field-idle (0-1) is published on <html> by the particle field while it
+     spells the initials, so the scrim lifts and the letters become readable. */
+  opacity: calc(1 - var(--field-idle, 0) * 0.62);
   background:
     radial-gradient(ellipse 60% 55% at 12% 78%, color-mix(in srgb, var(--color-bg) 78%, transparent), transparent 70%),
     linear-gradient(
@@ -79,6 +82,115 @@
   font-size: clamp(2.75rem, 9vw, 8rem);
   line-height: 0.92;
   letter-spacing: -0.04em;
+  cursor: default;
+}
+
+/* ==========================================================================
+   Headline glitch — the accent phrase briefly splits into chromatic layers.
+   Hover on pointer devices, click anywhere. */
+.accent-text {
+  position: relative;
+  display: inline-block;
+}
+
+.accent-text::before,
+.accent-text::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.accent-text::before {
+  color: var(--color-hint);
+}
+
+.accent-text::after {
+  color: var(--color-accent-light);
+}
+
+.accent-text--glitch::before {
+  animation: glitch-shift-a 900ms steps(2, end) 1;
+}
+
+.accent-text--glitch::after {
+  animation: glitch-shift-b 900ms steps(2, end) 1;
+}
+
+@media (hover: hover) {
+  .hero__title:hover .accent-text::before {
+    animation: glitch-shift-a 700ms steps(2, end) 1;
+  }
+  .hero__title:hover .accent-text::after {
+    animation: glitch-shift-b 700ms steps(2, end) 1;
+  }
+}
+
+@keyframes glitch-shift-a {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translate(0, 0);
+    clip-path: inset(0 0 0 0);
+  }
+  8% {
+    opacity: 0.85;
+    transform: translate(-3px, 1px);
+    clip-path: inset(8% 0 62% 0);
+  }
+  22% {
+    opacity: 0.7;
+    transform: translate(3px, -1px);
+    clip-path: inset(48% 0 22% 0);
+  }
+  40% {
+    opacity: 0.8;
+    transform: translate(-2px, 0);
+    clip-path: inset(70% 0 6% 0);
+  }
+  62% {
+    opacity: 0.45;
+    transform: translate(2px, 1px);
+    clip-path: inset(24% 0 44% 0);
+  }
+  84% {
+    opacity: 0.2;
+    transform: translate(-1px, 0);
+  }
+}
+
+@keyframes glitch-shift-b {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translate(0, 0);
+    clip-path: inset(0 0 0 0);
+  }
+  10% {
+    opacity: 0.8;
+    transform: translate(3px, -1px);
+    clip-path: inset(30% 0 36% 0);
+  }
+  28% {
+    opacity: 0.6;
+    transform: translate(-3px, 1px);
+    clip-path: inset(4% 0 74% 0);
+  }
+  48% {
+    opacity: 0.7;
+    transform: translate(2px, 0);
+    clip-path: inset(58% 0 12% 0);
+  }
+  70% {
+    opacity: 0.4;
+    transform: translate(-2px, -1px);
+    clip-path: inset(14% 0 60% 0);
+  }
+  88% {
+    opacity: 0.15;
+    transform: translate(1px, 0);
+  }
 }
 
 .hero__tagline {

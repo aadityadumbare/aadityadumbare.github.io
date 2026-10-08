@@ -1,0 +1,181 @@
+.palette-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-overlay) + 5);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: clamp(2.5rem, 12vh, 7rem) var(--space-lg) var(--space-lg);
+  overflow-y: auto;
+  background: color-mix(in srgb, var(--color-bg) 86%, transparent);
+  animation: palette-fade var(--dur-panel) var(--ease-out);
+}
+
+.palette {
+  width: min(40rem, 100%);
+  max-height: min(70svh, 34rem);
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg-elev);
+  border: 1px solid var(--color-line-strong);
+  animation: palette-in var(--dur-panel) var(--ease-out);
+}
+
+/* Focused to move the keyboard in; not a control, so no ring around the box. */
+.palette:focus,
+.palette:focus-visible {
+  outline: none;
+}
+
+.palette__field {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.palette__prompt {
+  font-family: var(--font-mono);
+  font-size: var(--text-lg);
+  color: var(--color-accent);
+}
+
+.palette__input {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  color: var(--color-text);
+  background: transparent;
+  border: 0;
+  outline: none;
+}
+
+.palette__input::placeholder {
+  color: var(--color-text-dim);
+}
+
+.palette__kbd {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-text-dim);
+  border: 1px solid var(--color-line);
+  padding: 2px 6px;
+}
+
+.palette__list {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--space-2xs);
+}
+
+.palette__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  border-left: 2px solid transparent;
+  cursor: pointer;
+  transition: background-color var(--dur-tap) var(--ease-out);
+}
+
+.palette__item--active {
+  background: var(--color-surface-hover);
+  border-left-color: var(--color-accent);
+}
+
+.palette__group {
+  flex-shrink: 0;
+  width: 6.5rem;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--color-text-dim);
+}
+
+.palette__label {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text);
+}
+
+.palette__hint {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-text-dim);
+}
+
+.palette__empty {
+  padding: var(--space-lg);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-text-dim);
+}
+
+.palette__foot {
+  flex-shrink: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-lg);
+  padding: var(--space-sm) var(--space-lg);
+  border-top: 1px solid var(--color-line);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-text-dim);
+}
+
+.palette__foot kbd {
+  border: 1px solid var(--color-line);
+  padding: 1px 5px;
+  margin-right: 3px;
+}
+
+/* Keyboard hints are meaningless on touch — swap in a tap affordance. */
+.palette__foot-touch {
+  display: none;
+}
+
+@media (hover: none) {
+  .palette__foot-key {
+    display: none;
+  }
+  .palette__foot-touch {
+    display: inline;
+  }
+}
+
+@keyframes palette-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes palette-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.99);
+  }
+}
+
+@media (max-width: 560px) {
+  .palette-overlay {
+    padding-top: var(--space-2xl);
+  }
+  .palette__group {
+    display: none;
+  }
+}

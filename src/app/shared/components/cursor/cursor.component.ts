@@ -14,7 +14,8 @@ const INTERACTIVE = 'a,button,[data-cursor],input,textarea,select,[role="button"
 
 /**
  * Monochrome cursor companion: an instant dot plus a lagging ring that reacts
- * to interactive elements. Only enabled for fine pointers with motion allowed.
+ * to interactive elements, presses, and clicks. Only enabled for fine pointers
+ * with motion allowed.
  */
 @Component({
   selector: 'app-cursor',
@@ -22,6 +23,7 @@ const INTERACTIVE = 'a,button,[data-cursor],input,textarea,select,[role="button"
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="cursor" #root aria-hidden="true">
+      <span class="cursor__pulse" #pulse></span>
       <span class="cursor__ring" #ring></span>
       <span class="cursor__dot" #dot></span>
       <span class="cursor__label" #label></span>
@@ -47,6 +49,7 @@ export class CursorComponent implements AfterViewInit, OnDestroy {
   private ring?: HTMLElement;
   private dot?: HTMLElement;
   private labelEl?: HTMLElement;
+  private pulse?: HTMLElement;
 
   private readonly onMove = (event: PointerEvent): void => {
     this.tx = event.clientX;
@@ -74,9 +77,20 @@ export class CursorComponent implements AfterViewInit, OnDestroy {
     this.setLabel(hit.getAttribute('data-cursor') === 'view' ? 'View' : '');
   };
 
+  /** Press feedback: the ring tightens, and a ring pulse fires outwards. */
+  private readonly onDown = (): void => {
+    this.root?.classList.add('is-pressed');
+    this.firePulse();
+  };
+
+  private readonly onUp = (): void => {
+    this.root?.classList.remove('is-pressed');
+  };
+
   private readonly onLeave = (): void => {
     this.visible = false;
     this.root?.classList.remove('is-visible');
+    this.root?.classList.remove('is-pressed');
   };
 
   ngAfterViewInit(): void {
@@ -89,11 +103,15 @@ export class CursorComponent implements AfterViewInit, OnDestroy {
     this.ring = this.host.nativeElement.querySelector<HTMLElement>('.cursor__ring') ?? undefined;
     this.dot = this.host.nativeElement.querySelector<HTMLElement>('.cursor__dot') ?? undefined;
     this.labelEl = this.host.nativeElement.querySelector<HTMLElement>('.cursor__label') ?? undefined;
+    this.pulse = this.host.nativeElement.querySelector<HTMLElement>('.cursor__pulse') ?? undefined;
 
     this.doc.documentElement.classList.add('has-custom-cursor');
 
     this.zone.runOutsideAngular(() => {
       window.addEventListener('pointermove', this.onMove, { passive: true });
+      window.addEventListener('pointerdown', this.onDown, { passive: true });
+      window.addEventListener('pointerup', this.onUp, { passive: true });
+      window.addEventListener('pointercancel', this.onUp, { passive: true });
       this.doc.addEventListener('pointerover', this.onOver, true);
       this.doc.documentElement.addEventListener('mouseleave', this.onLeave);
       this.loop();
@@ -106,6 +124,9 @@ export class CursorComponent implements AfterViewInit, OnDestroy {
     }
     cancelAnimationFrame(this.raf);
     window.removeEventListener('pointermove', this.onMove);
+    window.removeEventListener('pointerdown', this.onDown);
+    window.removeEventListener('pointerup', this.onUp);
+    window.removeEventListener('pointercancel', this.onUp);
     this.doc.removeEventListener('pointerover', this.onOver, true);
     this.doc.documentElement.removeEventListener('mouseleave', this.onLeave);
     this.doc.documentElement.classList.remove('has-custom-cursor');
@@ -115,6 +136,20 @@ export class CursorComponent implements AfterViewInit, OnDestroy {
     if (this.labelEl) {
       this.labelEl.textContent = text;
     }
+  }
+
+  private firePulse(): void {
+    if (!this.pulse) {
+      return;
+    }
+    const transformAt = (scale: number, opacity: number): Keyframe => ({
+      transform: `translate3d(${this.tx}px, ${this.ty}px, 0) scale(${scale})`,
+      opacity: String(opacity)
+    });
+    this.pulse.animate([transformAt(0.25, 0.9), transformAt(1.6, 0)], {
+      duration: 520,
+      easing: 'cubic-bezier(0.22, 1, 0.36, 1)'
+    });
   }
 
   private readonly loop = (): void => {

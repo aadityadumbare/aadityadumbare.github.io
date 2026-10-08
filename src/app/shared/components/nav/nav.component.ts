@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, ElementRef, HostListener, ViewChild, inject, signal } from '@angular/core';
 import { ThemeService } from '../../../core/services/theme.service';
+import { AchievementService } from '../../../core/services/achievement.service';
+import { UiService } from '../../../core/services/ui.service';
 import { ModeSwitcherComponent } from '../mode-switcher/mode-switcher.component';
 
 @Component({
@@ -12,11 +14,14 @@ import { ModeSwitcherComponent } from '../mode-switcher/mode-switcher.component'
 })
 export class NavComponent {
   themeService = inject(ThemeService);
+  readonly achievements = inject(AchievementService);
+  readonly ui = inject(UiService);
 
   @ViewChild('progress') private readonly progressRef?: ElementRef<HTMLElement>;
 
   isScrolled = signal(false);
   isMenuOpen = signal(false);
+  spinning = signal(false);
 
   navLinks = [
     { label: 'About', hash: '#about' },
@@ -55,5 +60,14 @@ export class NavComponent {
 
   closeMenu(): void {
     this.isMenuOpen.set(false);
+  }
+
+  /** Double-click the wordmark for a spin (and a discovery). */
+  spinLogo(): void {
+    this.spinning.set(false);
+    requestAnimationFrame(() => this.spinning.set(true));
+    setTimeout(() => this.spinning.set(false), 950);
+
+    this.achievements.unlock('logo-spin');
   }
 }

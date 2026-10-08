@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { PortfolioService } from '../../core/services/portfolio.service';
 import { MotionService } from '../../core/services/motion.service';
+import { AchievementService } from '../../core/services/achievement.service';
 import { PortfolioMode } from '../../core/models/portfolio.models';
 
 @Component({
@@ -22,6 +23,7 @@ import { PortfolioMode } from '../../core/models/portfolio.models';
 })
 export class SecretComponent implements AfterViewInit, OnDestroy {
   readonly portfolioService = inject(PortfolioService);
+  readonly achievements = inject(AchievementService);
   private readonly motion = inject(MotionService);
 
   pin = signal<string>('');
@@ -95,6 +97,11 @@ export class SecretComponent implements AfterViewInit, OnDestroy {
 
   toggleProjectDeepDives(): void {
     this.portfolioService.toggleProjectDeepDives(!this.portfolioService.config().enableProjectDeepDives);
+  }
+
+  resetDiscoveries(): void {
+    this.achievements.reset();
+    this.achievements.notify('Discoveries reset', 'The hunt starts again.', 'System');
   }
 
   closePanel(): void {
