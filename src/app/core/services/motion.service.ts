@@ -19,7 +19,10 @@ export class MotionService {
 
   readonly reducedMotion = signal(false);
   readonly smoothScroll = signal(false);
+  /** True while any dialog/overlay wants the page scroll frozen. */
+  readonly overlayOpen = signal(false);
 
+  private readonly locks = new Set<string>();
   private lenis: Lenis | null = null;
   private resizeTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -50,6 +53,28 @@ export class MotionService {
         window.scrollTo({ top, behavior: this.reducedMotion() ? 'auto' : 'smooth' });
       }
     });
+  }
+
+  /** Freeze page scrolling while an overlay is open. Ref-counted per caller id. */
+  lockScroll(id: string): void {
+    this.locks.add(id);
+    this.applyScrollLock();
+  }
+
+  unlockScroll(id: string): void {
+    this.locks.delete(id);
+    this.applyScrollLock();
+  }
+
+  private applyScrollLock(): void {
+    const locked = this.locks.size > 0;
+    this.overlayOpen.set(locked);
+    this.doc.documentElement.classList.toggle('scroll-locked', locked);
+    if (locked) {
+      this.lenis?.stop();
+    } else {
+      this.lenis?.start();
+    }
   }
 
   /** Recalculate Lenis + ScrollTrigger geometry after layout changes. */

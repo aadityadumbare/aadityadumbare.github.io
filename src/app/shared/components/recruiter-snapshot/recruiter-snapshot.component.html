@@ -4,47 +4,61 @@
 </button>
 
 @if (isOpen()) {
-  <div class="recruiter-overlay" (click)="close()">
-    <section class="recruiter-card" role="dialog" aria-modal="true" aria-labelledby="recruiter-title" (click)="$event.stopPropagation()">
-      <button type="button" class="recruiter-card__close" (click)="close()" aria-label="Close recruiter snapshot">×</button>
-
-      <p class="recruiter-card__eyebrow">30-second recruiter brief</p>
-      <h2 id="recruiter-title">Why {{ profile().name }}?</h2>
-      <p class="recruiter-card__summary">
-        Full Stack Software Developer who ships enterprise Angular, .NET, React, Java, and Node.js applications.
-      </p>
-
-      <div class="recruiter-card__stats" aria-label="Career highlights">
-        @for (stat of stats(); track stat.label) {
-          <div class="recruiter-stat">
-            <strong>{{ stat.value }}</strong>
-            <span>{{ stat.label }}</span>
-          </div>
-        }
-      </div>
-
-      <div class="recruiter-card__section">
-        <h3>Best fit</h3>
-        <div class="recruiter-card__tags">
-          <span>Full Stack</span>
-          <span>Angular &amp; React</span>
-          <span>.NET &amp; Java</span>
-          <span>Enterprise APIs</span>
+  <div class="dialog-overlay" data-lenis-prevent (click)="close()">
+    <section
+      #dialog
+      class="dialog dialog--sm"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="recruiter-title"
+      tabindex="-1"
+      (click)="$event.stopPropagation()"
+    >
+      <header class="dialog__head">
+        <div>
+          <p class="dialog__eyebrow">30-second recruiter brief</p>
+          <h2 class="dialog__title" id="recruiter-title">Why {{ profile().name }}?</h2>
         </div>
-      </div>
+        <button type="button" class="dialog__close" (click)="close()" aria-label="Close recruiter snapshot">×</button>
+      </header>
 
-      <div class="recruiter-card__section">
-        <h3>Evidence of impact</h3>
-        <ul>
-          <li>Modernized Angular 8/12 applications to Angular 22.</li>
-          <li>Built secure APIs, payment integrations, and real-time features.</li>
-          <li>Comfortable across frontend, backend, databases, and CI/CD.</li>
-        </ul>
-      </div>
+      <div class="dialog__body">
+        <p class="recruiter-summary">
+          Full Stack Software Developer who ships enterprise Angular, .NET, React, Java, and Node.js applications.
+        </p>
 
-      <div class="recruiter-card__actions">
-        <a class="btn btn--primary" [href]="profile().resume" target="_blank" rel="noopener noreferrer">View Resume</a>
-        <a class="btn btn--outline" [href]="'mailto:' + profile().email">Contact Me</a>
+        <div class="recruiter-stats" aria-label="Career highlights">
+          @for (stat of stats(); track stat.label) {
+            <div class="recruiter-stat">
+              <strong>{{ stat.value }}</strong>
+              <span>{{ stat.label }}</span>
+            </div>
+          }
+        </div>
+
+        <section class="dialog__section">
+          <h3>Best fit</h3>
+          <div class="dialog__tags">
+            <span>Full Stack</span>
+            <span>Angular &amp; React</span>
+            <span>.NET &amp; Java</span>
+            <span>Enterprise APIs</span>
+          </div>
+        </section>
+
+        <section class="dialog__section">
+          <h3>Evidence of impact</h3>
+          <ul>
+            <li>Modernized Angular 8/12 applications to Angular 22.</li>
+            <li>Built secure APIs, payment integrations, and real-time features.</li>
+            <li>Comfortable across frontend, backend, databases, and CI/CD.</li>
+          </ul>
+        </section>
+
+        <div class="dialog__actions">
+          <a class="btn btn--primary" [href]="profile().resume" target="_blank" rel="noopener noreferrer">View resume</a>
+          <a class="btn btn--outline" [href]="'mailto:' + profile().email">Contact me</a>
+        </div>
       </div>
     </section>
   </div>

@@ -1,59 +1,159 @@
-# TempAngular
+# adityadumbare.github.io
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.2.
+Personal portfolio for **Aditya Dumbare** — a single-page Angular 22 site with a WebGL hero,
+scroll-driven motion, and visitor analytics wired to a separate analytics service.
 
-## Development server
+Live: <https://aadityadumbare.github.io>
 
-To start a local development server, run:
+---
 
-```bash
-ng serve
+## Stack
+
+| Layer | Choice |
+| --- | --- |
+| Framework | Angular 22 — standalone components, signals, **zoneless** (no `zone.js`) |
+| Styling | SCSS with CSS custom-property design tokens (no framework) |
+| 3D | three.js (hero particle constellation, lazy-loaded) |
+| Motion | GSAP + ScrollTrigger, Lenis smooth scroll |
+| Analytics | Inline tracker + `AnalyticsService` → [analytics service](./docs/analytics-identity.md) |
+| Deploy | GitHub Pages via GitHub Actions |
+
+---
+
+## Design direction
+
+**Kinetic Monochrome** — a near-black canvas, a single signature hue (acid lime `#d4ff00`),
+oversized grotesk display type (Space Grotesk) set against monospace micro-labels (JetBrains
+Mono), hairline rules and sharp edges.
+
+Dark is the identity. The header toggle switches to a light **Paper** variant; every colour
+flows through tokens in `src/styles.scss`, so components never hard-code a palette.
+
+---
+
+## Project structure
+
+```
+src/
+├─ index.html                     # shell + inline analytics tracker
+├─ styles.scss                    # tokens, base, utilities, dialogs, reduced motion
+└─ app/
+   ├─ app.ts / app.routes.ts      # root component + hash routing
+   ├─ data/portfolio.data.ts      # ALL content lives here
+   ├─ core/
+   │  ├─ models/portfolio.models.ts
+   │  └─ services/                # portfolio, theme, motion, analytics
+   ├─ features/                   # hero, about, skills, projects, experience, contact, secret, home
+   └─ shared/
+      ├─ components/              # nav, footer, cursor, particle-field, dialogs, …
+      └─ directives/              # reveal, parallax, tilt, magnetic
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Content is **not** fetched — it is hard-coded in `src/app/data/portfolio.data.ts` and filtered
+at runtime by `PortfolioService` into four perspectives (`fullstack | frontend | backend |
+personal`), persisted to `localStorage` and switchable via the `?mode=` query param.
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Motion system
+
+`core/services/motion.service.ts` is the single owner of page-wide motion:
+
+- **Lenis** inertia scrolling, bridged to **GSAP ScrollTrigger** through the GSAP ticker.
+- **Anchor delegation** — every `a[href^="#"]` is intercepted so in-page links land correctly
+  under Lenis and update the URL.
+- **Scroll locking** — `lockScroll(id)` / `unlockScroll(id)` are ref-counted per caller, so any
+  overlay can freeze the page (and the hero loop) without fighting another.
+- **Reduced motion** — `prefers-reduced-motion` disables Lenis, stops the 3D loop, and turns
+  reveals into instant fades.
+
+`ParticleFieldComponent` dynamically imports three.js, so it lands in its **own lazy chunk** and
+never blocks first paint. It pauses when scrolled out of view, when the tab is hidden, and while
+a dialog is open (a blurred overlay over a live WebGL canvas is what makes a UI feel frozen).
+
+Micro-interactions are directive-based: `appReveal`, `appParallax`, `appTilt`, `appMagnetic`,
+plus a custom cursor component (fine pointers only).
+
+---
+
+## Dialogs
+
+All overlays (project case study, recruiter snapshot, secret admin panel) share one system in
+`styles.scss`:
+
+- the overlay centres a **bounded shell**;
+- the **header never scrolls** (eyebrow + title + a 44×44 close button);
+- the **body is the only scroll region**, so long content is always reachable and the close
+  button never scrolls away.
+
+> Gotcha: a `position: fixed` overlay is positioned against the viewport **only if no ancestor
+> creates a containing block.** A `transform`, `filter`, or `backdrop-filter` on an ancestor
+> breaks it. `appReveal` therefore clears its inline transform once the animation completes, and
+> the sticky header keeps its blur on a pseudo-element.
+
+---
+
+## Analytics & visitor identity
+
+The site sends page views and custom events to a separate analytics service, and the contact
+form attaches a real identity (name + email, with consent) to the visitor's anonymous id.
+
+- Tracker: inline script in `src/index.html` (`pageview`, `[data-track]` clicks, `window.trackEvent`).
+- Identity: `core/services/analytics.service.ts` → `POST /api/v1/profiles/identify`.
+
+Full contract, consent model, and a local test recipe: **[docs/analytics-identity.md](./docs/analytics-identity.md)**.
+
+---
+
+## Local development
+
+> **Node version:** Angular CLI 22 requires **Node ≥ 22.22.3** (or 24.15+/26). If your default
+> Node is older, switch first — e.g. `nvm use 24.21.0`.
+
+> **`NODE_ENV=production` gotcha:** this machine exports `NODE_ENV=production`, which makes npm
+> silently skip **all** devDependencies (`typescript`, `@angular/build`, `@types/*`, …) and the
+> build then fails with "Could not find the '@angular/build:application' builder's node package".
+> Install with dev deps explicitly:
 
 ```bash
-ng generate component component-name
+npm install --include=dev
+npm start                 # dev server on http://localhost:4200
+npm run build             # production build
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+The analytics service must be running separately for the contact form to work locally (see the
+doc linked above). Local requests target `http://localhost:3000`; production targets the
+deployed Render instance.
+
+---
+
+## Build & deploy
 
 ```bash
-ng generate --help
+npm run build
 ```
 
-## Building
+- Budgets (production): **500 kB** warn / **1 MB** error for the initial bundle —
+  the app currently ships ~462 kB raw / ~129 kB transfer.
+- three.js is emitted as a **separate lazy chunk** (~155 kB transfer) and is not part of the
+  initial payload.
+- Output: `dist/temp-angular/browser` (the `angular.json` project is still named `temp-angular`).
 
-To build the project run:
+Pushing to `main` triggers `.github/workflows/deploy.yml`, which builds and publishes to GitHub
+Pages. Routing uses `withHashLocation()`, so client-side routes work on Pages with no fallback
+configuration.
 
-```bash
-ng build
-```
+---
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Accessibility
 
-## Running unit tests
+Focus rings are never removed (`:focus-visible` only); reduced-motion is honoured end to end;
+touch targets are ≥ 44×44; form inputs are ≥ 16px to prevent iOS zoom-on-focus; dialogs move
+focus in and restore it to the trigger on close; status changes are announced via ARIA live
+regions.
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+---
 
-```bash
-ng test
-```
+## Docs
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- [Visitor identity & contact form](./docs/analytics-identity.md)

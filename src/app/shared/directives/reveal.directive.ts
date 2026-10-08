@@ -22,7 +22,7 @@ export class RevealDirective implements OnInit, OnDestroy {
     const node = this.el.nativeElement;
 
     if (this.motion.reducedMotion()) {
-      gsap.set(node, { opacity: 1, y: 0 });
+      gsap.set(node, { opacity: 1 });
       return;
     }
 
@@ -35,6 +35,10 @@ export class RevealDirective implements OnInit, OnDestroy {
         duration: 0.7,
         delay: this.delay / 1000,
         ease: 'power3.out',
+        // Drop the inline transform once done: a lingering transform would turn
+        // this element into the containing block for any fixed-position dialog
+        // rendered inside it (breaking overlay positioning).
+        onComplete: () => gsap.set(node, { clearProps: 'transform' }),
         scrollTrigger: {
           trigger: node,
           start: 'top 88%',

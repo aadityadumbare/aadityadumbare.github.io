@@ -6,6 +6,7 @@ import {
   NgZone,
   OnDestroy,
   ViewChild,
+  effect,
   inject
 } from '@angular/core';
 import { MotionService } from '../../../core/services/motion.service';
@@ -121,6 +122,15 @@ export class ParticleFieldComponent implements AfterViewInit, OnDestroy {
     this.tabVisible = !document.hidden;
     this.syncLoop();
   };
+
+  constructor() {
+    // Pause the render loop while a dialog is open: a backdrop-filter blur over
+    // a live WebGL canvas is what makes the UI feel frozen.
+    effect(() => {
+      this.motion.overlayOpen();
+      this.syncLoop();
+    });
+  }
 
   ngAfterViewInit(): void {
     if (this.motion.reducedMotion() || !this.supportsWebGL()) {
@@ -430,7 +440,8 @@ export class ParticleFieldComponent implements AfterViewInit, OnDestroy {
   };
 
   private syncLoop(): void {
-    const shouldRun = this.darkTheme && this.inView && this.tabVisible && !!this.renderer && !this.destroyed;
+    const shouldRun =
+      this.darkTheme && this.inView && this.tabVisible && !this.motion.overlayOpen() && !!this.renderer && !this.destroyed;
     if (shouldRun && !this.running) {
       this.running = true;
       this.renderer?.setAnimationLoop(this.render);

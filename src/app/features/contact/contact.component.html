@@ -1,38 +1,138 @@
 <section class="section section--alt" id="contact">
   <div class="container">
-    <div class="contact" appReveal>
-      <p class="eyebrow">05 / Contact</p>
-      <h2 class="contact__title display">Let's build<br />something.</h2>
-      <p class="contact__text">
-        I'm currently open to Full Stack, Frontend, or Backend developer roles. Whether you have a question, want to
-        discuss a project, or just want to connect, my inbox is always open.
-      </p>
+    <div class="contact">
+      <div class="contact__intro" appReveal>
+        <p class="eyebrow">05 / Contact</p>
+        <h2 class="contact__title display">Let's build<br />something.</h2>
+        <p class="contact__text">
+          I'm currently open to Full Stack, Frontend, or Backend developer roles. Leave your details and I'll get back
+          to you, or email me directly.
+        </p>
 
-      <a class="contact__mail" [href]="'mailto:' + profile().email">
-        {{ profile().email }}
-        <span class="contact__mail-arrow" aria-hidden="true">→</span>
-      </a>
+        <a class="contact__mail" [href]="'mailto:' + profile().email">
+          {{ profile().email }}
+          <span class="contact__mail-arrow" aria-hidden="true">→</span>
+        </a>
 
-      <div class="contact__social">
-        @for (link of social(); track link.name) {
-          <a [href]="link.url" target="_blank" rel="noopener noreferrer" class="social-link" [aria-label]="link.name">
-            @if (link.icon === 'github') {
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-              </svg>
-            } @else if (link.icon === 'linkedin') {
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                <rect x="2" y="9" width="4" height="12"></rect>
-                <circle cx="4" cy="4" r="2"></circle>
-              </svg>
-            } @else if (link.icon === 'email') {
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                <polyline points="22,6 12,13 2,6"></polyline>
-              </svg>
+        <div class="contact__social">
+          @for (link of social(); track link.name) {
+            <a [href]="link.url" target="_blank" rel="noopener noreferrer" class="social-link" [aria-label]="link.name">
+              @if (link.icon === 'github') {
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                </svg>
+              } @else if (link.icon === 'linkedin') {
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                  <rect x="2" y="9" width="4" height="12"></rect>
+                  <circle cx="4" cy="4" r="2"></circle>
+                </svg>
+              } @else if (link.icon === 'email') {
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                  <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+              }
+            </a>
+          }
+        </div>
+      </div>
+
+      <div class="contact__aside" appReveal [delay]="120">
+        @if (status() === 'success') {
+          <div #done class="contact-form contact-form--done" role="status" tabindex="-1">
+            <p class="contact-form__done-title">Thanks — that came through.</p>
+            <p class="contact-form__done-text">
+              I'll reply to <strong>{{ submittedEmail() }}</strong> as soon as I can.
+            </p>
+            <button type="button" class="btn btn--outline" (click)="reset()">Send another</button>
+          </div>
+        } @else {
+          <form #form class="contact-form" (submit)="onSubmit($event)" novalidate>
+            <div class="contact-form__head">
+              <h3 class="contact-form__title">Send a message</h3>
+              <p class="contact-form__hint">Stored with your consent. Used only to reply.</p>
+            </div>
+
+            <div class="field">
+              <label for="cf-name">Name</label>
+              <input
+                id="cf-name"
+                name="name"
+                type="text"
+                autocomplete="name"
+                maxlength="128"
+                [value]="nameInput()"
+                (input)="nameInput.set($any($event.target).value)"
+                (blur)="markTouched('name')"
+                [attr.aria-invalid]="showError('name')"
+                [attr.aria-describedby]="showError('name') ? 'cf-name-error' : null"
+              />
+              @if (showError('name')) {
+                <p class="field__error" id="cf-name-error">{{ nameError() }}</p>
+              }
+            </div>
+
+            <div class="field">
+              <label for="cf-email">Email</label>
+              <input
+                id="cf-email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                maxlength="256"
+                [value]="emailInput()"
+                (input)="emailInput.set($any($event.target).value)"
+                (blur)="markTouched('email')"
+                [attr.aria-invalid]="showError('email')"
+                [attr.aria-describedby]="showError('email') ? 'cf-email-error' : null"
+              />
+              @if (showError('email')) {
+                <p class="field__error" id="cf-email-error">{{ emailError() }}</p>
+              }
+            </div>
+
+            <div class="field">
+              <label for="cf-message">Message <span class="field__optional">optional</span></label>
+              <textarea
+                id="cf-message"
+                name="message"
+                rows="4"
+                maxlength="1000"
+                [value]="messageInput()"
+                (input)="messageInput.set($any($event.target).value)"
+              ></textarea>
+            </div>
+
+            <div class="consent">
+              <input
+                id="cf-consent"
+                name="consent"
+                type="checkbox"
+                [checked]="consentInput()"
+                (change)="consentInput.set($any($event.target).checked)"
+                (blur)="markTouched('consent')"
+                [attr.aria-invalid]="showError('consent')"
+                [attr.aria-describedby]="'cf-consent-text' + (showError('consent') ? ' cf-consent-error' : '')"
+              />
+              <label for="cf-consent" id="cf-consent-text">{{ consentText }}</label>
+            </div>
+            @if (showError('consent')) {
+              <p class="field__error" id="cf-consent-error">{{ consentError() }}</p>
             }
-          </a>
+
+            @if (status() === 'error') {
+              <p class="contact-form__error" role="alert">{{ errorMessage() }}</p>
+            }
+
+            <button type="submit" class="btn btn--primary btn--lg contact-form__submit" [disabled]="status() === 'submitting'">
+              {{ status() === 'submitting' ? 'Sending…' : 'Send message' }}
+            </button>
+
+            <p class="sr-only" role="status" aria-live="polite">
+              {{ status() === 'submitting' ? 'Sending your details' : '' }}
+            </p>
+          </form>
         }
       </div>
     </div>

@@ -100,6 +100,12 @@
         if (el) trackCustom(el);
       });
 
+      // Public helper so app code can fire precise custom events, e.g.
+      //   window.trackEvent('contact_identified', { source: 'contact_form' });
+      window.trackEvent = function (eventName, metadata) {
+        send({ eventType: "custom", eventName: eventName, metadata: metadata || {} });
+      };
+
       // Initial page view + hashchange (SPA navigation).
       trackPage();
       window.addEventListener("hashchange", trackPage);

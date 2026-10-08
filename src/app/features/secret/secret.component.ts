@@ -1,22 +1,39 @@
-import { Component, inject, signal, ChangeDetectionStrategy, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  OnDestroy,
+  ViewChild,
+  effect,
+  inject,
+  signal
+} from '@angular/core';
 import { PortfolioService } from '../../core/services/portfolio.service';
+import { MotionService } from '../../core/services/motion.service';
 import { PortfolioMode } from '../../core/models/portfolio.models';
 
 @Component({
   selector: 'app-secret',
   standalone: true,
-  imports: [CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './secret.component.html',
   styleUrls: ['./secret.component.scss']
 })
-export class SecretComponent implements AfterViewInit {
-  portfolioService = inject(PortfolioService);
+export class SecretComponent implements AfterViewInit, OnDestroy {
+  readonly portfolioService = inject(PortfolioService);
+  private readonly motion = inject(MotionService);
 
   pin = signal<string>('');
   isAuthorized = signal<boolean>(false);
   errorMessage = signal<string>('');
+
+  modes: { key: PortfolioMode; label: string }[] = [
+    { key: 'fullstack', label: 'Full Stack' },
+    { key: 'frontend', label: 'Frontend' },
+    { key: 'backend', label: 'Backend' },
+    { key: 'personal', label: 'Personal' }
+  ];
 
   accentColors = [
     { name: 'Signal Lime (Default)', hex: '#d4ff00' },
@@ -26,18 +43,32 @@ export class SecretComponent implements AfterViewInit {
     { name: 'Hot Magenta', hex: '#ff2d78' }
   ];
 
-  @ViewChild('pinInput') pinInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('pinInput') pinInput?: ElementRef<HTMLInputElement>;
 
-  ngAfterViewInit() {
-    // Focus pin input on load
-    setTimeout(() => {
-      if (this.pinInput) {
-        this.pinInput.nativeElement.focus();
+  constructor() {
+    // Freeze page scroll (and the hero's 3D loop) while the panel is open.
+    effect(() => {
+      if (this.portfolioService.isSecretUnlocked()) {
+        this.motion.lockScroll('secret-panel');
+      } else {
+        this.motion.unlockScroll('secret-panel');
       }
-    }, 100);
+    });
   }
 
-  onPinInput(event: Event) {
+  get portfolio(): PortfolioService {
+    return this.portfolioService;
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => this.pinInput?.nativeElement.focus(), 100);
+  }
+
+  ngOnDestroy(): void {
+    this.motion.unlockScroll('secret-panel');
+  }
+
+  onPinInput(event: Event): void {
     const input = event.target as HTMLInputElement;
     this.pin.set(input.value);
     this.errorMessage.set('');
@@ -46,43 +77,49 @@ export class SecretComponent implements AfterViewInit {
     if (input.value === targetPin) {
       this.isAuthorized.set(true);
     } else if (input.value.length >= targetPin.length) {
-      this.errorMessage.set('INVALID SECURE PIN. ACCESS DENIED.');
+      this.errorMessage.set('Invalid secure PIN. Access denied.');
       this.pin.set('');
       input.value = '';
     }
   }
 
-  setAccentColor(colorHex: string) {
+  setAccentColor(colorHex: string): void {
     document.documentElement.style.setProperty('--color-accent', colorHex);
-    // Add glow variation
     document.documentElement.style.setProperty('--color-accent-glow', `${colorHex}40`);
     document.documentElement.style.setProperty('--color-accent-light', this.lightenColor(colorHex, 20));
   }
 
-  toggleSwitcher() {
-    const current = this.portfolioService.config().showModeSwitcher;
-    this.portfolioService.toggleModeSwitcher(!current);
+  toggleSwitcher(): void {
+    this.portfolioService.toggleModeSwitcher(!this.portfolioService.config().showModeSwitcher);
   }
 
-  toggleProjectDeepDives() {
-    const current = this.portfolioService.config().enableProjectDeepDives;
-    this.portfolioService.toggleProjectDeepDives(!current);
+  toggleProjectDeepDives(): void {
+    this.portfolioService.toggleProjectDeepDives(!this.portfolioService.config().enableProjectDeepDives);
   }
 
-  closePanel() {
+  closePanel(): void {
     this.portfolioService.lockSecret();
     this.isAuthorized.set(false);
     this.pin.set('');
     this.errorMessage.set('');
   }
 
-  // Lightens a hex color by a percent
   private lightenColor(hex: string, percent: number): string {
-    const num = parseInt(hex.replace('#',''), 16),
-    amt = Math.round(2.55 * percent),
-    R = (num >> 16) + amt,
-    G = (num >> 8 & 0x00FF) + amt,
-    B = (num & 0x0000FF) + amt;
-    return '#' + (0x1000000 + (R<255?R<0?0:R:255)*0x10000 + (G<255?G<0?0:G:255)*0x100 + (B<255?B<0?0:B:255)).toString(16).slice(1);
+    const num = parseInt(hex.replace('#', ''), 16);
+    const amt = Math.round(2.55 * percent);
+    const r = (num >> 16) + amt;
+    const g = ((num >> 8) & 0x00ff) + amt;
+    const b = (num & 0x0000ff) + amt;
+    return (
+      '#' +
+      (
+        0x1000000 +
+        (r < 255 ? (r < 0 ? 0 : r) : 255) * 0x10000 +
+        (g < 255 ? (g < 0 ? 0 : g) : 255) * 0x100 +
+        (b < 255 ? (b < 0 ? 0 : b) : 255)
+      )
+        .toString(16)
+        .slice(1)
+    );
   }
 }

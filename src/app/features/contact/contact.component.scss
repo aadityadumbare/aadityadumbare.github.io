@@ -1,4 +1,11 @@
 .contact {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-3xl);
+  align-items: start;
+}
+
+.contact__intro {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -10,7 +17,7 @@
 }
 
 .contact__text {
-  max-width: 52ch;
+  max-width: 46ch;
   margin-top: var(--space-lg);
   color: var(--color-text-muted);
   font-size: clamp(var(--text-base), 1.4vw, var(--text-lg));
@@ -23,7 +30,7 @@
   gap: var(--space-md);
   margin-top: var(--space-2xl);
   padding-bottom: var(--space-xs);
-  font-size: clamp(var(--text-lg), 4vw, var(--text-3xl));
+  font-size: clamp(var(--text-lg), 3vw, var(--text-2xl));
   font-weight: 500;
   letter-spacing: -0.02em;
   color: var(--color-text);
@@ -74,8 +81,178 @@
   transform: translateY(-2px);
 }
 
+/* ==========================================================================
+   CONTACT FORM
+   ========================================================================== */
+.contact__aside {
+  min-width: 0;
+}
+
+.contact-form {
+  display: grid;
+  gap: var(--space-lg);
+  padding: var(--space-xl);
+  background: var(--color-bg-elev);
+  border: 1px solid var(--color-line);
+}
+
+.contact-form__head {
+  display: grid;
+  gap: var(--space-2xs);
+}
+
+.contact-form__title {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.contact-form__hint {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-dim);
+}
+
+.field {
+  display: grid;
+  gap: var(--space-xs);
+}
+
+.field label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--color-text-muted);
+}
+
+.field__optional {
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--color-text-dim);
+}
+
+/* 1rem minimum: anything smaller makes iOS Safari zoom on focus. */
+.field input,
+.field textarea {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--color-text);
+  background: transparent;
+  border: 1px solid var(--color-line-strong);
+  border-radius: 0;
+}
+
+.field textarea {
+  min-height: 6rem;
+  resize: vertical;
+}
+
+.field input:focus-visible,
+.field textarea:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+  border-color: var(--color-accent);
+}
+
+.field input[aria-invalid='true'],
+.field textarea[aria-invalid='true'] {
+  border-color: var(--color-hint);
+}
+
+.field__error {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--color-hint);
+}
+
+.consent {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-sm);
+  align-items: start;
+}
+
+.consent input {
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  accent-color: var(--color-accent);
+}
+
+.consent input:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.consent label {
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+
+.contact-form__error {
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  border-left: 2px solid var(--color-hint);
+  background: var(--color-surface);
+}
+
+.contact-form__submit {
+  width: 100%;
+}
+
+.contact-form__submit[disabled] {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.contact-form--done {
+  align-content: start;
+}
+
+.contact-form--done:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.contact-form__done-title {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.contact-form__done-text {
+  color: var(--color-text-muted);
+  line-height: 1.7;
+}
+
+.contact-form__done-text strong {
+  color: var(--color-text);
+  overflow-wrap: anywhere;
+}
+
+.contact-form--done .btn {
+  justify-self: start;
+}
+
+@media (max-width: 900px) {
+  .contact {
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+  }
+}
+
 @media (max-width: 480px) {
   .contact__mail {
     overflow-wrap: anywhere;
+  }
+  .contact-form {
+    padding: var(--space-lg);
   }
 }
