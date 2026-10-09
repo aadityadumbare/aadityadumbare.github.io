@@ -1,6 +1,6 @@
 <section class="section" id="skills">
   <div class="container">
-    <app-section-header label="02 / Capabilities" title="What I build with"></app-section-header>
+    <app-section-header [label]="header().label" [title]="header().title"></app-section-header>
 
     <div class="skills__index">
       @for (cat of skillCategories(); track cat.title; let i = $index) {

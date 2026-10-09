@@ -16,6 +16,8 @@ export class SkillsComponent {
 
   private readonly filteredSkills = this.portfolioService.skills;
 
+  header = computed(() => this.portfolioService.sectionHeader('skills'));
+
   skillCategories = computed(() => {
     const s = this.filteredSkills();
     const list: { title: string; items: string[] }[] = [];

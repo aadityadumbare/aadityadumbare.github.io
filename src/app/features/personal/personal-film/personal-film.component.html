@@ -1,0 +1,82 @@
+<section class="section" id="films">
+  <div class="container">
+    <app-section-header [label]="header().label" [title]="header().title"></app-section-header>
+
+    <div class="film">
+      @for (clip of space().videos; track clip.id; let i = $index) {
+        <button type="button" class="clip" (click)="open(clip)" [attr.aria-label]="'Open clip: ' + clip.title" appReveal [delay]="i * 80">
+          <span class="clip__poster">
+            @if (clip.poster) {
+              <img [src]="clip.poster" [alt]="clip.title" loading="lazy" />
+            } @else {
+              <app-generative-frame [hue]="clip.hue" />
+            }
+            <span class="clip__play" aria-hidden="true"></span>
+            <span class="clip__duration">{{ clip.duration }}</span>
+          </span>
+
+          <span class="clip__body">
+            <span class="clip__title">{{ clip.title }}</span>
+            <span class="clip__desc">{{ clip.description }}</span>
+            <span class="clip__tags">
+              @for (tag of clip.tags; track tag) {
+                <span class="clip__tag">{{ tag }}</span>
+              }
+            </span>
+          </span>
+        </button>
+      }
+    </div>
+  </div>
+</section>
+
+@if (selected(); as clip) {
+  <div class="dialog-overlay" data-lenis-prevent (click)="close()">
+    <article
+      #dialog
+      class="dialog"
+      role="dialog"
+      aria-modal="true"
+      tabindex="-1"
+      [attr.aria-labelledby]="'clip-title-' + clip.id"
+      (click)="$event.stopPropagation()"
+    >
+      <header class="dialog__head">
+        <div>
+          <p class="dialog__eyebrow">Clip · {{ clip.duration }}</p>
+          <h2 class="dialog__title" [id]="'clip-title-' + clip.id">{{ clip.title }}</h2>
+        </div>
+        <button type="button" class="dialog__close" (click)="close()" aria-label="Close clip">×</button>
+      </header>
+
+      <div class="dialog__body">
+        <div class="clip-dialog__stage">
+          @if (clip.src) {
+            <video class="clip-dialog__video" [src]="clip.src" [poster]="clip.poster ?? undefined" controls playsinline></video>
+          } @else {
+            <app-generative-frame [hue]="clip.hue" />
+            <p class="clip-dialog__note">Still rendering — this one is being uploaded.</p>
+          }
+        </div>
+
+        <section class="dialog__section">
+          <h3>About this clip</h3>
+          <p>{{ clip.description }}</p>
+        </section>
+
+        <section class="dialog__section">
+          <h3>Made with</h3>
+          <div class="dialog__tags">
+            @for (tag of clip.tags; track tag) {
+              <span>{{ tag }}</span>
+            }
+          </div>
+        </section>
+
+        <div class="dialog__actions">
+          <button type="button" class="btn btn--outline" (click)="close()">Close</button>
+        </div>
+      </div>
+    </article>
+  </div>
+}

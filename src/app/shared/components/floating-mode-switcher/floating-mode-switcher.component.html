@@ -5,7 +5,7 @@
         class="floating-switcher__trigger"
         (click)="toggleOpen()"
         aria-label="Hidden portfolio mode switcher">
-        <span>{{ portfolioService.activeMode() === 'fullstack' ? '⚡' : portfolioService.activeMode() === 'frontend' ? '🎨' : portfolioService.activeMode() === 'backend' ? '⚙️' : '☕' }}</span>
+        <span>{{ portfolioService.activeModeConfig().icon }}</span>
       </button>
 
       @if (isOpen()) {
@@ -16,7 +16,7 @@
               [class.floating-switcher__option--active]="portfolioService.activeMode() === mode.key"
               (click)="selectMode(mode.key)">
               <span>{{ mode.icon }}</span>
-              <span>{{ mode.label }}</span>
+              <span>{{ mode.shortLabel }}</span>
             </button>
           }
         </div>

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, HostListener, NgZone, inject, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, HostListener, NgZone, computed, inject, signal, viewChild } from '@angular/core';
 import { PortfolioService } from '../../core/services/portfolio.service';
 import { MotionService } from '../../core/services/motion.service';
 import { SectionHeaderComponent } from '../../shared/components/section-header/section-header.component';
@@ -24,6 +24,7 @@ export class ProjectsComponent {
 
   projects = this.portfolioService.projects;
   config = this.portfolioService.config;
+  header = computed(() => this.portfolioService.sectionHeader('projects'));
   selectedProject = signal<ProjectItem | null>(null);
 
   openDeepDive(project: ProjectItem): void {

@@ -1,7 +1,30 @@
 /* ==========================================================================
    KINETIC MONOCHROME — DESIGN TOKENS
    Near-black canvas, one signature hue (acid lime), hairline rules.
+
+   The signature hue is now owned by the active perspective (see
+   modes.data.ts + PortfolioService): the service writes --color-accent* and
+   --mode-* on <html>, these are the defaults before it boots.
    ========================================================================== */
+
+/* Registered so the hue can be transitioned when the perspective changes —
+   an unregistered custom property can only snap. */
+@property --color-accent {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #d4ff00;
+}
+@property --color-accent-light {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #e2ff5c;
+}
+@property --color-accent-glow {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: rgba(212, 255, 0, 0.32);
+}
+
 :root {
   /* Surfaces */
   --color-bg: #08080a;
@@ -22,7 +45,7 @@
   --color-line: rgba(245, 245, 244, 0.1);
   --color-line-strong: rgba(245, 245, 244, 0.22);
 
-  /* The one hue */
+  /* The one hue (default perspective: full stack / signal lime) */
   --color-accent: #d4ff00;
   --color-accent-ink: #08080a;
   --color-accent-light: #e2ff5c;
@@ -33,6 +56,10 @@
 
   --gradient-primary: linear-gradient(135deg, #d4ff00 0%, #b9e000 100%);
   --gradient-text: linear-gradient(135deg, #f5f5f4, #f5f5f4);
+
+  /* Perspective tokens (written by PortfolioService) */
+  --mode-tint: rgba(212, 255, 0, 0.07);
+  --mode-blend: additive;
 
   --color-success: #d4ff00;
   --color-terminal-bg: #0b0b0e;
@@ -150,6 +177,11 @@ html {
   scrollbar-gutter: stable;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  /* The hue morphs when the perspective changes (props registered above). */
+  transition:
+    --color-accent var(--dur-section) var(--ease-out),
+    --color-accent-light var(--dur-section) var(--ease-out),
+    --color-accent-glow var(--dur-section) var(--ease-out);
 }
 
 /* Set by MotionService while a dialog is open */
@@ -218,9 +250,10 @@ strong {
   inset: 0;
   z-index: var(--z-bg);
   background:
-    radial-gradient(ellipse 70% 45% at 50% -12%, rgba(212, 255, 0, 0.07), transparent 62%),
-    radial-gradient(ellipse 50% 40% at 100% 100%, rgba(212, 255, 0, 0.03), transparent 60%);
+    radial-gradient(ellipse 70% 45% at 50% -12%, var(--mode-tint), transparent 62%),
+    radial-gradient(ellipse 50% 40% at 100% 100%, color-mix(in srgb, var(--color-accent) 4%, transparent), transparent 60%);
   pointer-events: none;
+  transition: background var(--dur-section) var(--ease-out);
 }
 
 .bg-grid {
@@ -238,7 +271,18 @@ strong {
 }
 
 [data-theme="light"] .bg-gradient {
-  background: radial-gradient(ellipse 70% 45% at 50% -12%, rgba(107, 122, 0, 0.08), transparent 62%);
+  background: radial-gradient(ellipse 70% 45% at 50% -12%, var(--mode-tint), transparent 62%);
+}
+
+/* Per-perspective atmosphere. The palette itself is driven by tokens; these
+   are the small structural touches that make each place feel different. */
+[data-mode="personal"] .bg-grid {
+  opacity: 0.38;
+  background-size: 120px 120px;
+}
+[data-mode="frontend"] .bg-grid {
+  opacity: 0.6;
+  background-size: 72px 72px;
 }
 
 /* Legacy hook — the old gradient text is retired in favour of solid ink */
@@ -289,6 +333,13 @@ strong {
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1.02;
+}
+
+/* Placeholder that reserves the hero's height while the personal space's
+   lazy chunk loads, so switching perspective never jumps the scroll. */
+.hero-skeleton {
+  min-height: 100svh;
+  background: radial-gradient(ellipse 46% 46% at 50% 46%, var(--color-accent-glow), transparent 70%);
 }
 
 /* ==========================================================================

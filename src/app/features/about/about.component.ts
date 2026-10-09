@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PortfolioService } from '../../core/services/portfolio.service';
 import { SectionHeaderComponent } from '../../shared/components/section-header/section-header.component';
@@ -17,4 +17,6 @@ export class AboutComponent {
 
   profile = this.portfolioService.profile;
   social = this.portfolioService.social;
+  about = this.portfolioService.about;
+  header = computed(() => this.portfolioService.sectionHeader('about'));
 }

@@ -36,7 +36,7 @@ interface Command {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (ui.commandOpen()) {
-      <div class="palette-overlay" (click)="close()">
+      <div class="palette-overlay" data-lenis-prevent (click)="close()">
         <div
           #panel
           class="palette"
@@ -207,19 +207,19 @@ export class CommandPaletteComponent implements OnDestroy {
 
   private buildCommands(): Command[] {
     const go = (hash: string) => () => this.motion.scrollTo(hash);
-    const modes: Array<{ key: 'fullstack' | 'frontend' | 'backend' | 'personal'; label: string }> = [
-      { key: 'fullstack', label: 'Full stack' },
-      { key: 'frontend', label: 'Frontend' },
-      { key: 'backend', label: 'Backend / .NET' },
-      { key: 'personal', label: 'Personal' }
-    ];
+
+    // Navigate + Perspective are generated from the registry, so the palette
+    // always matches the active mode's sections and perspectives.
+    const navCommands = this.portfolio.sections().map<Command>((section) => ({
+      id: `go-${section.id}`,
+      label: `Go to ${section.label.split('/').pop()?.trim() ?? section.id}`,
+      hint: section.label.split('/')[0]?.trim() ?? '',
+      group: 'Navigate',
+      run: go(`#${section.id}`)
+    }));
 
     return [
-      { id: 'go-about', label: 'Go to About', hint: '01', group: 'Navigate', run: go('#about') },
-      { id: 'go-skills', label: 'Go to Skills', hint: '02', group: 'Navigate', run: go('#skills') },
-      { id: 'go-projects', label: 'Go to Projects', hint: '03', group: 'Navigate', run: go('#projects') },
-      { id: 'go-experience', label: 'Go to Experience', hint: '04', group: 'Navigate', run: go('#experience') },
-      { id: 'go-contact', label: 'Go to Contact', hint: '05', group: 'Navigate', run: go('#contact') },
+      ...navCommands,
 
       {
         id: 'toggle-theme',
@@ -257,10 +257,10 @@ export class CommandPaletteComponent implements OnDestroy {
         run: () => this.portfolio.unlockSecret()
       },
 
-      ...modes.map<Command>((mode) => ({
+      ...this.portfolio.modes.map<Command>((mode) => ({
         id: `mode-${mode.key}`,
         label: `Perspective: ${mode.label}`,
-        hint: this.portfolio.activeMode() === mode.key ? 'current' : '',
+        hint: this.portfolio.activeMode() === mode.key ? 'current' : mode.codename,
         group: 'Perspective',
         run: () => this.portfolio.setMode(mode.key)
       })),

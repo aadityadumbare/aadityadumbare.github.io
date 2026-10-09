@@ -1,5 +1,47 @@
 export type PortfolioMode = 'frontend' | 'backend' | 'fullstack' | 'personal';
 
+/**
+ * The visual "vibe" a perspective carries. Every value maps onto a design
+ * token, so switching modes re-skins the whole site without touching a
+ * component. `tint` feeds the fixed background glow, `blend` tells the WebGL
+ * scenes whether additive light reads correctly against the palette.
+ */
+export interface ModeVibe {
+  accent: string;
+  accentInk: string;
+  accentLight: string;
+  accentGlow: string;
+  accentSecondary: string;
+  gradient: string;
+  tint: string;
+  blend: 'additive' | 'normal';
+}
+
+/** A section a perspective wants on the page, with this mode's own heading. */
+export interface ModeSectionConfig {
+  id: string;
+  label: string;
+  title: string;
+}
+
+/** Everything the UI needs to know about one perspective. */
+export interface ModeConfig {
+  key: PortfolioMode;
+  label: string;
+  shortLabel: string;
+  icon: string;
+  codename: string;
+  description: string;
+  title: string;
+  tagline: string;
+  /** About paragraphs, written for this perspective. */
+  about: string[];
+  /** Line shown beside the contact form, written for this perspective. */
+  contactNote: string;
+  vibe: ModeVibe;
+  sections: ModeSectionConfig[];
+}
+
 export interface ProfileData {
   name: string;
   title: string;
@@ -70,4 +112,81 @@ export interface PortfolioData {
   projects: ProjectItem[];
   experience: ExperienceItem[];
   terminal: TerminalData;
+}
+
+/* ==========================================================================
+   PERSONAL SPACE
+   The `personal` perspective is not a filter — it is its own place, with its
+   own content shape. Media is generative by default (no binary assets), but
+   every item accepts a real `src` once one is dropped into the repo.
+   ========================================================================== */
+
+export interface NowItem {
+  label: string;
+  value: string;
+}
+
+export interface PersonalStory {
+  id: string;
+  title: string;
+  excerpt: string;
+  body: string;
+  date: string;
+  tag: string;
+  accent: boolean;
+}
+
+export interface GalleryPhoto {
+  id: string;
+  caption: string;
+  meta: string;
+  /** Real image path, or null to render the generative artwork. */
+  src: string | null;
+  /** Hue (0–360) driving the generative artwork / image treatment. */
+  hue: number;
+  span: 'normal' | 'wide' | 'tall';
+}
+
+export interface VideoClip {
+  id: string;
+  title: string;
+  description: string;
+  duration: string;
+  tags: string[];
+  /** Real video path + poster, or null for the generative placeholder. */
+  src: string | null;
+  poster: string | null;
+  hue: number;
+}
+
+export interface SideProject {
+  id: string;
+  title: string;
+  description: string;
+  year: string;
+  tags: string[];
+  url: string | null;
+  status: 'shipped' | 'building' | 'exploring';
+}
+
+export interface ReadingItem {
+  id: string;
+  title: string;
+  creator: string;
+  kind: 'book' | 'album' | 'article' | 'film';
+  note: string;
+}
+
+export interface PersonalSpace {
+  eyebrow: string;
+  greeting: string;
+  intro: string;
+  mood: string;
+  nowUpdated: string;
+  now: NowItem[];
+  stories: PersonalStory[];
+  gallery: GalleryPhoto[];
+  videos: VideoClip[];
+  sideProjects: SideProject[];
+  reading: ReadingItem[];
 }

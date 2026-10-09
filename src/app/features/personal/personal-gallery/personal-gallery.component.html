@@ -1,0 +1,30 @@
+<section class="section section--alt" id="gallery">
+  <div class="container">
+    <app-section-header [label]="header().label" [title]="header().title"></app-section-header>
+
+    <div class="gallery">
+      @for (photo of space().gallery; track photo.id; let i = $index) {
+        <figure
+          class="frame-card"
+          [class.frame-card--wide]="photo.span === 'wide'"
+          [class.frame-card--tall]="photo.span === 'tall'"
+          appReveal
+          [delay]="i * 60"
+        >
+          <div class="frame-card__media">
+            @if (photo.src) {
+              <img [src]="photo.src" [alt]="photo.caption" loading="lazy" />
+            } @else {
+              <app-generative-frame [hue]="photo.hue" />
+            }
+          </div>
+
+          <figcaption class="frame-card__cap">
+            <span class="frame-card__caption">{{ photo.caption }}</span>
+            <span class="frame-card__meta">{{ photo.meta }}</span>
+          </figcaption>
+        </figure>
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,233 @@
+/* ==========================================================================
+   MODE PORTAL — the doorway between the professional and personal worlds.
+   Pinned to the right edge, vertically centred, so it never fights page copy.
+   ========================================================================== */
+
+.portal,
+.pro {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  z-index: calc(var(--z-header) + 2);
+}
+
+.portal {
+  display: flex;
+}
+
+/* --------------------------------------------------------------------------
+   Professional side — a warm, quietly insistent portal.
+   -------------------------------------------------------------------------- */
+.portal__trigger {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  width: 2.75rem;
+  min-height: 9rem;
+  padding: var(--space-lg) 0;
+  background: color-mix(in srgb, var(--color-bg-elev) 92%, transparent);
+  border: 1px solid rgba(255, 179, 71, 0.35);
+  border-right: 0;
+  transition:
+    border-color var(--dur-panel) var(--ease-out),
+    box-shadow var(--dur-panel) var(--ease-out);
+}
+
+.portal__trigger:hover,
+.portal--open .portal__trigger,
+.portal--peek .portal__trigger {
+  border-color: rgba(255, 179, 71, 0.75);
+  box-shadow: -14px 0 46px rgba(255, 179, 71, 0.16);
+}
+
+.portal__ring {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 179, 71, 0.6);
+  box-shadow: 0 0 14px rgba(255, 179, 71, 0.45);
+}
+
+.portal__ring::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: var(--radius-full);
+  background: #ffb347;
+  box-shadow: 0 0 10px #ffb347;
+  animation: portal-pulse 2.6s ease-in-out infinite;
+}
+
+.portal--open .portal__ring {
+  box-shadow: 0 0 22px rgba(255, 179, 71, 0.75);
+}
+
+.portal--open .portal__ring::after {
+  animation-duration: 1.3s;
+}
+
+.portal__label {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.32em;
+  color: rgba(255, 200, 140, 0.9);
+}
+
+.portal__panel {
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 0.6rem);
+  width: min(20rem, 68vw);
+  display: grid;
+  gap: var(--space-sm);
+  padding: var(--space-lg);
+  background: var(--color-bg-elev);
+  border: 1px solid rgba(255, 179, 71, 0.4);
+  box-shadow: -18px 0 60px rgba(255, 179, 71, 0.14);
+  opacity: 0;
+  transform: translateY(-50%) translateX(14px);
+  pointer-events: none;
+  cursor: pointer;
+  transition:
+    opacity var(--dur-panel) var(--ease-out),
+    transform var(--dur-panel) var(--ease-out);
+}
+
+.portal--open .portal__panel,
+.portal--peek .portal__panel {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+  pointer-events: auto;
+}
+
+.portal__eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #ffb347;
+}
+
+.portal__title {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.portal__tease {
+  min-height: 1.5em;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  transition: opacity var(--dur-panel) var(--ease-out);
+}
+
+.portal__cta {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #ffb347;
+}
+
+/* --------------------------------------------------------------------------
+   Personal side — plain, quiet, professional.
+   -------------------------------------------------------------------------- */
+.pro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  width: 2.75rem;
+  min-height: 8.5rem;
+  padding: var(--space-lg) 0;
+  background: var(--color-bg-elev);
+  border: 1px solid var(--color-line-strong);
+  border-right: 0;
+  transition:
+    border-color var(--dur-ui) var(--ease-out),
+    color var(--dur-ui) var(--ease-out);
+}
+
+.pro:hover,
+.pro:focus-visible {
+  border-color: var(--color-accent);
+}
+
+.pro__arrow {
+  font-size: 14px;
+  line-height: 1;
+  color: var(--color-text-muted);
+  transition: color var(--dur-ui) var(--ease-out);
+}
+
+.pro__label {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.26em;
+  color: var(--color-text-muted);
+  transition: color var(--dur-ui) var(--ease-out);
+}
+
+.pro:hover .pro__arrow,
+.pro:hover .pro__label {
+  color: var(--color-text);
+}
+
+/* --------------------------------------------------------------------------
+   Crossing over — a warm radial wipe from the doorway.
+   -------------------------------------------------------------------------- */
+.mode-wipe {
+  position: fixed;
+  inset: 0;
+  z-index: 340;
+  pointer-events: none;
+  background: radial-gradient(circle at 100% 50%, var(--wipe-color, #ffb347) 0%, transparent 62%);
+  animation: mode-wipe 900ms var(--ease-out);
+}
+
+@keyframes portal-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes mode-wipe {
+  0% {
+    opacity: 0;
+    transform: scale(0.55);
+  }
+  35% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
+@media (max-width: 480px) {
+  .portal__trigger,
+  .pro {
+    min-height: 7rem;
+  }
+  .portal__label,
+  .pro__label {
+    letter-spacing: 0.2em;
+  }
+}

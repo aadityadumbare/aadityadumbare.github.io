@@ -1,0 +1,43 @@
+@if (isPersonal()) {
+  <button
+    type="button"
+    class="pro"
+    (click)="enterProfessional()"
+    aria-label="Switch back to the full stack profile"
+  >
+    <span class="pro__arrow" aria-hidden="true">←</span>
+    <span class="pro__label">Full Stack</span>
+  </button>
+} @else {
+  <div
+    class="portal"
+    [class.portal--open]="expanded()"
+    [class.portal--peek]="peeked()"
+    (mouseenter)="expand()"
+    (mouseleave)="collapse()"
+    (focusin)="expand()"
+    (focusout)="onFocusOut($event)"
+  >
+    <button
+      type="button"
+      class="portal__trigger"
+      (click)="enterPersonal()"
+      [attr.aria-expanded]="expanded()"
+      aria-label="Open the personal space"
+    >
+      <span class="portal__ring" aria-hidden="true"></span>
+      <span class="portal__label">Personal</span>
+    </button>
+
+    <div class="portal__panel" (click)="enterPersonal()" aria-hidden="true">
+      <p class="portal__eyebrow">// beyond the résumé</p>
+      <p class="portal__title">There's a whole other room.</p>
+      <p class="portal__tease">{{ tease() }}</p>
+      <span class="portal__cta">Step inside <span aria-hidden="true">→</span></span>
+    </div>
+  </div>
+}
+
+@if (wiping()) {
+  <div class="mode-wipe" [style.--wipe-color]="wipeColor()" aria-hidden="true"></div>
+}

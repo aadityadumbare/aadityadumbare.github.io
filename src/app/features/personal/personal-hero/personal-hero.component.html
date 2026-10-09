@@ -1,0 +1,16 @@
+<section class="phero" id="home">
+  <app-personal-scene class="phero__scene"></app-personal-scene>
+  <div class="phero__veil" aria-hidden="true"></div>
+
+  <div class="container phero__inner">
+    <p class="phero__eyebrow">{{ space().eyebrow }}</p>
+
+    <h1 class="phero__title display" appReveal>{{ space().greeting }}</h1>
+
+    <p class="phero__intro" appReveal [delay]="120">{{ space().intro }}</p>
+
+    <p class="phero__mood" appReveal [delay]="200">{{ space().mood }}</p>
+
+    <a href="#now" class="phero__cue" appReveal [delay]="260">Enter the space ↓</a>
+  </div>
+</section>

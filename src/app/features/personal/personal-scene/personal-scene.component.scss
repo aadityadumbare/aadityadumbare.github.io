@@ -1,0 +1,36 @@
+:host {
+  position: absolute;
+  inset: 0;
+  display: block;
+  /* Always-on glow behind the canvas — also the whole scene when WebGL is off. */
+  background:
+    radial-gradient(ellipse 46% 46% at 50% 46%, var(--color-accent-glow), transparent 70%),
+    radial-gradient(
+      ellipse 60% 55% at 32% 72%,
+      color-mix(in srgb, var(--color-accent-secondary) 20%, transparent),
+      transparent 72%
+    );
+}
+
+.personal-scene__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Weak hardware / reduced motion: the gradient above is the whole experience. */
+:host(.personal-scene--static) {
+  animation: scene-breathe 9s ease-in-out infinite;
+}
+
+@keyframes scene-breathe {
+  0%,
+  100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+}

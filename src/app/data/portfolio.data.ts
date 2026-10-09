@@ -188,3 +188,6 @@ export const PORTFOLIO_DATA: PortfolioData = {
     ],
   },
 };
+
+/* The personal space content lives in its own module (personal.data.ts) and is
+   imported on demand, so it never weighs down the initial bundle. */

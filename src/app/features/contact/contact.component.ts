@@ -30,6 +30,8 @@ export class ContactComponent {
 
   profile = this.portfolioService.profile;
   social = this.portfolioService.social;
+  header = computed(() => this.portfolioService.sectionHeader('contact'));
+  contactNote = computed(() => this.portfolioService.activeModeConfig().contactNote);
 
   readonly consentText = CONSENT_TEXT;
 

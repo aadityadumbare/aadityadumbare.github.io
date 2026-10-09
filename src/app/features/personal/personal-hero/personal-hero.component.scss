@@ -1,0 +1,91 @@
+.phero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  padding-top: calc(var(--header-height) + var(--space-2xl));
+}
+
+.phero__scene {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.phero__veil {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--color-bg) 42%, transparent) 0%,
+    color-mix(in srgb, var(--color-bg) 68%, transparent) 58%,
+    var(--color-bg) 100%
+  );
+}
+
+.phero__inner {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: var(--space-lg);
+  max-width: 62rem;
+  padding-bottom: var(--space-3xl);
+}
+
+.phero__eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--color-accent);
+}
+
+.phero__title {
+  font-size: clamp(2.1rem, 6vw, 4.75rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  max-width: 22ch;
+}
+
+.phero__intro {
+  max-width: 64ch;
+  font-size: clamp(var(--text-base), 1.5vw, var(--text-lg));
+  line-height: 1.7;
+  color: var(--color-text-muted);
+}
+
+.phero__mood {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-text-dim);
+}
+
+.phero__cue {
+  justify-self: start;
+  margin-top: var(--space-xs);
+  padding: var(--space-sm) var(--space-md);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--color-accent);
+  border: 1px solid var(--color-line-strong);
+  transition:
+    border-color var(--dur-ui) var(--ease-out),
+    background-color var(--dur-ui) var(--ease-out);
+}
+
+.phero__cue:hover {
+  border-color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 8%, transparent);
+}
+
+@media (max-width: 480px) {
+  .phero__inner {
+    padding-bottom: var(--space-2xl);
+  }
+}

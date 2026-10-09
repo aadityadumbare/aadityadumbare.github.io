@@ -1,0 +1,56 @@
+<section class="section" id="now">
+  <div class="container">
+    <app-section-header [label]="header().label" [title]="header().title"></app-section-header>
+
+    <div class="now">
+      <div class="now__stories">
+        @for (story of space().stories; track story.id; let i = $index) {
+          <article
+            class="story"
+            [class.story--accent]="story.accent"
+            [class.story--open]="openStory() === story.id"
+            appReveal
+            [delay]="i * 70"
+          >
+            <button
+              type="button"
+              class="story__head"
+              (click)="toggle(story.id)"
+              [attr.aria-expanded]="openStory() === story.id"
+              [attr.aria-controls]="'story-body-' + story.id"
+            >
+              <span class="story__eyebrow">
+                <span class="story__date">{{ story.date }}</span>
+                <span class="story__tag">{{ story.tag }}</span>
+              </span>
+              <h3 class="story__title">{{ story.title }}</h3>
+              <p class="story__excerpt">{{ story.excerpt }}</p>
+              <span class="story__toggle" aria-hidden="true">{{ openStory() === story.id ? '−' : '+' }}</span>
+            </button>
+
+            @if (openStory() === story.id) {
+              <div class="story__body" [id]="'story-body-' + story.id">
+                <p>{{ story.body }}</p>
+              </div>
+            }
+          </article>
+        }
+      </div>
+
+      <aside class="now__side" appReveal [delay]="160">
+        <p class="now__updated">{{ space().nowUpdated }}</p>
+
+        <dl class="now__facts">
+          @for (item of space().now; track item.label) {
+            <div class="now__fact">
+              <dt>{{ item.label }}</dt>
+              <dd>{{ item.value }}</dd>
+            </div>
+          }
+        </dl>
+
+        <p class="now__mood">{{ space().mood }}</p>
+      </aside>
+    </div>
+  </div>
+</section>

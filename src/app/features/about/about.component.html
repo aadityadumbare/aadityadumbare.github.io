@@ -1,6 +1,6 @@
 <section class="section section--alt" id="about">
   <div class="container">
-    <app-section-header label="01 / About" title="Who I am"></app-section-header>
+    <app-section-header [label]="header().label" [title]="header().title"></app-section-header>
 
     <div class="about__grid">
       <div class="about__visual" appReveal>
@@ -24,20 +24,9 @@
       </div>
 
       <div class="about__text" appReveal [delay]="120">
-        <p>
-          Hello! I'm Aditya, a results-driven Software Developer based in Pune, India. I specialize in building secure,
-          scalable, and high-performance applications across the entire stack.
-        </p>
-        <p>
-          With over 2 years of professional experience, I have partnered with global enterprise clients including
-          <strong>EPSON</strong>, <strong>TransCore (Delaware E-ZPass)</strong>, and
-          <strong>Network Solutions (Newfold &amp; Bluehost)</strong> to engineer robust APIs, microservices, and modern
-          frontend architectures.
-        </p>
-        <p>
-          I am highly proficient in the Microsoft .NET ecosystem, Angular (8–22), React, Java, Spring Boot, and database
-          engines like SQL Server and MongoDB. I enjoy turning complex problems into elegant, responsive web solutions.
-        </p>
+        @for (para of about(); track para) {
+          <p>{{ para }}</p>
+        }
 
         <div class="about__social">
           @for (link of social(); track link.name) {

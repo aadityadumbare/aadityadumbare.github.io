@@ -1,0 +1,145 @@
+.film {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-lg);
+}
+
+.clip {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+  transition:
+    border-color var(--dur-ui) var(--ease-out),
+    transform var(--dur-section) var(--ease-out);
+}
+
+.clip:hover {
+  border-color: var(--color-accent);
+  transform: translateY(-3px);
+}
+
+.clip__poster {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+
+.clip__poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.clip__play {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 54px;
+  height: 54px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--color-bg) 45%, transparent);
+  transition: transform var(--dur-panel) var(--ease-out);
+}
+
+.clip__play::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 0;
+  height: 0;
+  border-left: 12px solid #fff;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  transform: translateX(2px);
+}
+
+.clip:hover .clip__play {
+  transform: scale(1.1);
+}
+
+.clip__duration {
+  position: absolute;
+  right: var(--space-sm);
+  bottom: var(--space-sm);
+  padding: 3px 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--color-text);
+  background: color-mix(in srgb, var(--color-bg) 70%, transparent);
+}
+
+.clip__body {
+  display: grid;
+  gap: var(--space-xs);
+  padding: var(--space-lg);
+}
+
+.clip__title {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.clip__desc {
+  font-size: var(--text-sm);
+  line-height: 1.65;
+  color: var(--color-text-muted);
+}
+
+.clip__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  margin-top: var(--space-2xs);
+}
+
+.clip__tag {
+  padding: 2px 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-dim);
+  border: 1px solid var(--color-line);
+}
+
+.clip-dialog__stage {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+}
+
+.clip-dialog__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.clip-dialog__note {
+  position: absolute;
+  inset: auto var(--space-md) var(--space-md);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-text);
+}
+
+@media (max-width: 900px) {
+  .film {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  .film {
+    grid-template-columns: 1fr;
+  }
+}

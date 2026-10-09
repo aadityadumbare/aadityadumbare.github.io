@@ -1,0 +1,55 @@
+<section class="section section--alt" id="lab">
+  <div class="container">
+    <app-section-header [label]="header().label" [title]="header().title"></app-section-header>
+
+    <div class="lab">
+      <div class="lab__col">
+        <h3 class="lab__col-title">Side projects</h3>
+
+        <div class="lab__projects">
+          @for (project of space().sideProjects; track project.id; let i = $index) {
+            <article class="side" appReveal [delay]="i * 70">
+              <div class="side__head">
+                <h4 class="side__title">{{ project.title }}</h4>
+                <span class="side__status" [class]="'side__status side__status--' + project.status">
+                  {{ project.status }}
+                </span>
+              </div>
+
+              <p class="side__desc">{{ project.description }}</p>
+
+              <div class="side__foot">
+                <span class="side__year">{{ project.year }}</span>
+                <span class="side__tags">
+                  @for (tag of project.tags; track tag) {
+                    <span class="side__tag">{{ tag }}</span>
+                  }
+                </span>
+                @if (project.url) {
+                  <a class="side__link" [href]="project.url" target="_blank" rel="noopener noreferrer">Visit →</a>
+                }
+              </div>
+            </article>
+          }
+        </div>
+      </div>
+
+      <div class="lab__col">
+        <h3 class="lab__col-title">On rotation</h3>
+
+        <ul class="reading">
+          @for (item of space().reading; track item.id; let i = $index) {
+            <li class="reading__item" appReveal [delay]="i * 70">
+              <span class="reading__kind">{{ item.kind }}</span>
+              <div class="reading__text">
+                <p class="reading__title">{{ item.title }}</p>
+                <p class="reading__creator">{{ item.creator }}</p>
+                <p class="reading__note">{{ item.note }}</p>
+              </div>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

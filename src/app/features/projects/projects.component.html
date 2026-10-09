@@ -1,6 +1,6 @@
 <section class="section section--alt" id="projects">
   <div class="container">
-    <app-section-header label="03 / Selected work" title="What I've built"></app-section-header>
+    <app-section-header [label]="header().label" [title]="header().title"></app-section-header>
 
     <div class="projects__index">
       @for (project of projects(); track project.title; let i = $index) {

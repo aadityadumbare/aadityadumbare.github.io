@@ -17,12 +17,7 @@ export class FloatingModeSwitcherComponent implements OnDestroy {
   isVisible = signal(false);
   isOpen = signal(false);
 
-  modes: { key: PortfolioMode; label: string; icon: string }[] = [
-    { key: 'fullstack', label: 'Full Stack', icon: '⚡' },
-    { key: 'frontend', label: 'Frontend', icon: '🎨' },
-    { key: 'backend', label: 'Backend', icon: '⚙️' },
-    { key: 'personal', label: 'Personal', icon: '☕' }
-  ];
+  readonly modes = this.portfolioService.modes;
 
   private hoverTimer: ReturnType<typeof setTimeout> | null = null;
 

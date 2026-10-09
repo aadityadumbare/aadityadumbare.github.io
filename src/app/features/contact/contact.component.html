@@ -2,12 +2,9 @@
   <div class="container">
     <div class="contact">
       <div class="contact__intro" appReveal>
-        <p class="eyebrow">05 / Contact</p>
-        <h2 class="contact__title display">Let's build<br />something.</h2>
-        <p class="contact__text">
-          I'm currently open to Full Stack, Frontend, or Backend developer roles. Leave your details and I'll get back
-          to you, or email me directly.
-        </p>
+        <p class="eyebrow">{{ header().label }}</p>
+        <h2 class="contact__title display">{{ header().title }}</h2>
+        <p class="contact__text">{{ contactNote() }}</p>
 
         <a class="contact__mail" [href]="'mailto:' + profile().email">
           {{ profile().email }}

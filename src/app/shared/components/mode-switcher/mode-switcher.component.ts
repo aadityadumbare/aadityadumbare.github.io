@@ -15,12 +15,7 @@ export class ModeSwitcherComponent {
   portfolioService = inject(PortfolioService);
   isOpen = signal<boolean>(false);
 
-  modes: { key: PortfolioMode; label: string; icon: string }[] = [
-    { key: 'fullstack', label: 'Full Stack Developer', icon: '⚡' },
-    { key: 'frontend', label: 'Frontend Developer', icon: '🎨' },
-    { key: 'backend', label: 'Backend / .NET', icon: '⚙️' },
-    { key: 'personal', label: 'Personal Corner', icon: '☕' }
-  ];
+  readonly modes = this.portfolioService.modes;
 
   toggleDropdown() {
     this.isOpen.update(v => !v);
@@ -29,13 +24,5 @@ export class ModeSwitcherComponent {
   selectMode(modeKey: PortfolioMode) {
     this.portfolioService.setMode(modeKey);
     this.isOpen.set(false);
-  }
-
-  getModeIcon(key: PortfolioMode): string {
-    return this.modes.find(m => m.key === key)?.icon || '⚡';
-  }
-
-  getModeLabel(key: PortfolioMode): string {
-    return this.modes.find(m => m.key === key)?.label || 'Full Stack';
   }
 }

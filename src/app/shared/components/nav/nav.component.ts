@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, ElementRef, HostListener, ViewChild, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, HostListener, ViewChild, computed, inject, signal } from '@angular/core';
 import { ThemeService } from '../../../core/services/theme.service';
 import { AchievementService } from '../../../core/services/achievement.service';
 import { UiService } from '../../../core/services/ui.service';
+import { PortfolioService } from '../../../core/services/portfolio.service';
 import { ModeSwitcherComponent } from '../mode-switcher/mode-switcher.component';
 
 @Component({
@@ -16,6 +17,7 @@ export class NavComponent {
   themeService = inject(ThemeService);
   readonly achievements = inject(AchievementService);
   readonly ui = inject(UiService);
+  private readonly portfolioService = inject(PortfolioService);
 
   @ViewChild('progress') private readonly progressRef?: ElementRef<HTMLElement>;
 
@@ -23,13 +25,13 @@ export class NavComponent {
   isMenuOpen = signal(false);
   spinning = signal(false);
 
-  navLinks = [
-    { label: 'About', hash: '#about' },
-    { label: 'Skills', hash: '#skills' },
-    { label: 'Projects', hash: '#projects' },
-    { label: 'Experience', hash: '#experience' },
-    { label: 'Contact', hash: '#contact' }
-  ];
+  /** Nav mirrors the active perspective's sections, in order. */
+  navLinks = computed(() =>
+    this.portfolioService.sections().map((section) => ({
+      label: section.label.split('/').pop()?.trim() ?? section.id,
+      hash: `#${section.id}`
+    }))
+  );
 
   private ticking = false;
 
